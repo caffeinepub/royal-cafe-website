@@ -1,0 +1,203 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-single-page-mobile-first-marketing-website-for-royal-cafe-varpur-mau-uttar-pradesh-with-clear-scroll-navigation-between-sections-hero-about-highlights-menu-gallery-reviews-and-contact-location",
+      "featureTitle": "Create a single-page, mobile-first marketing website for “Royal Cafe, Varpur (Mau, Uttar Pradesh)” with clear scroll navigation between sections: Hero, About, Highlights, Menu, Gallery, Reviews, and Contact/Location.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/RoyalCafe/NavBar.tsx",
+        "frontend/src/components/RoyalCafe/sections/AboutSection.tsx",
+        "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx",
+        "frontend/src/components/RoyalCafe/sections/GallerySection.tsx",
+        "frontend/src/components/RoyalCafe/sections/HighlightsSection.tsx",
+        "frontend/src/components/RoyalCafe/sections/MenuSection.tsx",
+        "frontend/src/components/RoyalCafe/sections/ReviewsSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-coherent-visual-theme-that-feels-cozy-and-slightly-royal-warm-tones-with-an-elegant-accent-applied-consistently-across-typography-spacing-buttons-cards-and-section-backgrounds-avoid-generic-template-styling",
+      "featureTitle": "Implement a coherent visual theme that feels cozy and slightly royal (warm tones with an elegant accent), applied consistently across typography, spacing, buttons, cards, and section backgrounds. Avoid generic template styling.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-warm-hero-section-featuring-the-caf-name-royal-cafe-the-tagline-fresh-tea-great-taste-everyday-moments-and-a-clear-call-to-action-button-primary-view-menu-secondary-visit-us-today-use-inviting-local-feeling-food-beverage-visuals-not-overly-stock-like",
+      "featureTitle": "Build a warm hero section featuring: the café name “Royal Cafe”, the tagline “Fresh Tea, Great Taste, Everyday Moments”, and a clear call-to-action button (primary: “View Menu”; secondary: “Visit Us Today”). Use inviting, local-feeling food/beverage visuals (not overly stock-like).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/RoyalCafe/sections/HeroSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-an-about-royal-cafe-section-describing-what-makes-it-special-in-varpur-quality-taste-friendly-atmosphere-affordable-pricing-and-comfortable-seating-for-friends-family-keep-copy-simple-honest-and-easy-to-scan",
+      "featureTitle": "Add an “About Royal Cafe” section describing what makes it special in Varpur: quality taste, friendly atmosphere, affordable pricing, and comfortable seating for friends/family. Keep copy simple, honest, and easy to scan.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/RoyalCafe/sections/AboutSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-popular-picks-highlights-section-that-showcases-key-categories-items-tea-coffee-snacks-fast-food-and-optional-specials-present-as-a-small-grid-of-cards-with-short-descriptions-and-optional-price-placeholders-that-can-be-easily-edited-later",
+      "featureTitle": "Add a “Popular Picks” (highlights) section that showcases key categories/items: tea, coffee, snacks, fast food, and optional specials. Present as a small grid of cards with short descriptions and (optional) price placeholders that can be easily edited later.",
+      "files": [
+        "frontend/src/components/RoyalCafe/data/content.ts",
+        "frontend/src/components/RoyalCafe/sections/HighlightsSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-clean-easy-to-scan-menu-section-with-grouped-categories-e-g-tea-coffee-snacks-fast-food-include-item-names-and-optional-price-placeholders-clearly-indicated-as-editable-and-ensure-the-layout-is-optimized-for-phone-viewing",
+      "featureTitle": "Create a clean, easy-to-scan Menu section with grouped categories (e.g., Tea, Coffee, Snacks, Fast Food). Include item names and optional price placeholders (clearly indicated as editable) and ensure the layout is optimized for phone viewing.",
+      "files": [
+        "frontend/src/components/RoyalCafe/sections/HeroSection.tsx",
+        "frontend/src/components/RoyalCafe/sections/MenuSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-small-gallery-section-showing-caf-interior-food-drinks-and-happy-customers-use-a-responsive-grid-with-an-accessible-image-modal-lightbox-or-enlarged-view-on-tap",
+      "featureTitle": "Add a small Gallery section showing café interior, food/drinks, and happy customers. Use a responsive grid with an accessible image modal/lightbox or enlarged view on tap.",
+      "files": [
+        "frontend/src/components/RoyalCafe/data/content.ts",
+        "frontend/src/components/RoyalCafe/sections/GallerySection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-reviews-testimonials-section-showing-positive-local-feedback-3-6-testimonials-with-names-initials-and-short-quotes-keep-wording-authentic-and-simple-no-exaggerated-marketing-claims",
+      "featureTitle": "Add a Reviews/Testimonials section showing positive local feedback (3–6 testimonials) with names/initials and short quotes. Keep wording authentic and simple (no exaggerated marketing claims).",
+      "files": [
+        "frontend/src/components/RoyalCafe/data/content.ts",
+        "frontend/src/components/RoyalCafe/sections/ReviewsSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-contact-location-section-that-clearly-displays-location-in-varpur-mau-uttar-pradesh-business-hours-and-contact-details-include-an-embedded-google-map-iframe-for-navigation-plus-a-backup-open-in-google-maps-link",
+      "featureTitle": "Add a Contact & Location section that clearly displays: location in “Varpur, Mau, Uttar Pradesh”, business hours, and contact details. Include an embedded Google Map (iframe) for navigation plus a backup “Open in Google Maps” link.",
+      "files": [
+        "frontend/src/components/RoyalCafe/data/content.ts",
+        "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-overall-experience-is-fast-and-mobile-friendly-responsive-layout-optimized-images-accessible-headings-contrast-and-basic-seo-metadata-page-title-description",
+      "featureTitle": "Ensure the overall experience is fast and mobile-friendly: responsive layout, optimized images, accessible headings/contrast, and basic SEO metadata (page title/description).",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/App.tsx",
+        "frontend/src/components/RoyalCafe/sections/GallerySection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

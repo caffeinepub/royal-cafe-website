@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Design and build a modern, mobile-friendly, authentic local café website for Royal Cafe (Varpur, Mau, Uttar Pradesh) with a warm/royal cozy aesthetic, clear CTA, menu, gallery, testimonials, and contact/location details including embedded Google Map.",
+  "architectural_notes": [
+    "Prioritize mobile-first responsive layout and performance since most visitors will be on phones.",
+    "Use authentic, local-feeling imagery (avoid overly generic stock look).",
+    "Site should maintain a cozy + royal color palette: warm tones with a touch of elegance."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Warm, photorealistic hero background showing Indian chai/tea glasses and snacks on a café table with cozy lighting (royal-cafe-hero.dim_1920x1080.png)\n- Photorealistic café interior scene with simple seating, warm tones, and welcoming vibe (royal-cafe-interior-1.dim_1400x933.png)\n- Photorealistic close-up of chai with local snacks (e.g., samosa/biscuit) on a plate (royal-cafe-food-1.dim_1400x933.png)\n- Photorealistic close-up of coffee in a cup with light snack (royal-cafe-food-2.dim_1400x933.png)\n- Photorealistic scene of a small group of happy customers in a casual café setting (royal-cafe-customers-1.dim_1400x933.png)\n- Simple elegant logo mark with a crown/tea motif in warm/royal colors, transparent background (royal-cafe-logo.dim_512x512.png)",
+  "existing_features": [
+    {
+      "id": "feature-create-a-single-page-mobile-first-marketing-website-for-royal-cafe-varpur-mau-uttar-pradesh-with-clear-scroll-navigation-between-sections-hero-about-highlights-menu-gallery-reviews-and-contact-location",
+      "title": "Create a single-page, mobile-first marketing website for “Royal Cafe, Varpur (Mau, Uttar Pradesh)” with clear scroll navigation between sections: Hero, About, Highlights, Menu, Gallery, Reviews, and Contact/Location.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-coherent-visual-theme-that-feels-cozy-and-slightly-royal-warm-tones-with-an-elegant-accent-applied-consistently-across-typography-spacing-buttons-cards-and-section-backgrounds-avoid-generic-template-styling",
+      "title": "Implement a coherent visual theme that feels cozy and slightly royal (warm tones with an elegant accent), applied consistently across typography, spacing, buttons, cards, and section backgrounds. Avoid generic template styling.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-warm-hero-section-featuring-the-caf-name-royal-cafe-the-tagline-fresh-tea-great-taste-everyday-moments-and-a-clear-call-to-action-button-primary-view-menu-secondary-visit-us-today-use-inviting-local-feeling-food-beverage-visuals-not-overly-stock-like",
+      "title": "Build a warm hero section featuring: the café name “Royal Cafe”, the tagline “Fresh Tea, Great Taste, Everyday Moments”, and a clear call-to-action button (primary: “View Menu”; secondary: “Visit Us Today”). Use inviting, local-feeling food/beverage visuals (not overly stock-like).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-about-royal-cafe-section-describing-what-makes-it-special-in-varpur-quality-taste-friendly-atmosphere-affordable-pricing-and-comfortable-seating-for-friends-family-keep-copy-simple-honest-and-easy-to-scan",
+      "title": "Add an “About Royal Cafe” section describing what makes it special in Varpur: quality taste, friendly atmosphere, affordable pricing, and comfortable seating for friends/family. Keep copy simple, honest, and easy to scan.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-popular-picks-highlights-section-that-showcases-key-categories-items-tea-coffee-snacks-fast-food-and-optional-specials-present-as-a-small-grid-of-cards-with-short-descriptions-and-optional-price-placeholders-that-can-be-easily-edited-later",
+      "title": "Add a “Popular Picks” (highlights) section that showcases key categories/items: tea, coffee, snacks, fast food, and optional specials. Present as a small grid of cards with short descriptions and (optional) price placeholders that can be easily edited later.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-clean-easy-to-scan-menu-section-with-grouped-categories-e-g-tea-coffee-snacks-fast-food-include-item-names-and-optional-price-placeholders-clearly-indicated-as-editable-and-ensure-the-layout-is-optimized-for-phone-viewing",
+      "title": "Create a clean, easy-to-scan Menu section with grouped categories (e.g., Tea, Coffee, Snacks, Fast Food). Include item names and optional price placeholders (clearly indicated as editable) and ensure the layout is optimized for phone viewing.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-small-gallery-section-showing-caf-interior-food-drinks-and-happy-customers-use-a-responsive-grid-with-an-accessible-image-modal-lightbox-or-enlarged-view-on-tap",
+      "title": "Add a small Gallery section showing café interior, food/drinks, and happy customers. Use a responsive grid with an accessible image modal/lightbox or enlarged view on tap.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-reviews-testimonials-section-showing-positive-local-feedback-3-6-testimonials-with-names-initials-and-short-quotes-keep-wording-authentic-and-simple-no-exaggerated-marketing-claims",
+      "title": "Add a Reviews/Testimonials section showing positive local feedback (3–6 testimonials) with names/initials and short quotes. Keep wording authentic and simple (no exaggerated marketing claims).",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-contact-location-section-that-clearly-displays-location-in-varpur-mau-uttar-pradesh-business-hours-and-contact-details-include-an-embedded-google-map-iframe-for-navigation-plus-a-backup-open-in-google-maps-link",
+      "title": "Add a Contact & Location section that clearly displays: location in “Varpur, Mau, Uttar Pradesh”, business hours, and contact details. Include an embedded Google Map (iframe) for navigation plus a backup “Open in Google Maps” link.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-overall-experience-is-fast-and-mobile-friendly-responsive-layout-optimized-images-accessible-headings-contrast-and-basic-seo-metadata-page-title-description",
+      "title": "Ensure the overall experience is fast and mobile-friendly: responsive layout, optimized images, accessible headings/contrast, and basic SEO metadata (page title/description).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Homepage hero section with Royal Cafe name, tagline, and clear call-to-action (e.g., Visit Us Today / View Menu) using inviting local-looking visuals and cozy/royal color palette",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "About/intro section describing what makes Royal Cafe special in Varpur (quality taste, friendly atmosphere, affordable pricing, comfortable seating)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Highlight popular items (tea, coffee, snacks, fast food, specials if available) in a simple, easy-to-read section",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Clean, easy-to-scan menu section",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Small photo gallery showcasing interior, food, and customers to build trust",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Reviews/testimonials section featuring positive local feedback",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Contact/location section with address (Varpur, Mau), business hours, contact details, and embedded Google Map",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Fast, mobile-friendly responsive design optimized for phone visitors",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Royal Cafe Website",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

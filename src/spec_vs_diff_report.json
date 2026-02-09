@@ -1,0 +1,67 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-09T07:21:30.878Z",
+  "summary": "Diff adds a full single-page Royal Cafe marketing site composed of NavBar + Hero/About/Highlights/Menu/Gallery/Reviews/Contact sections with smooth scrolling, themed Tailwind styling, centralized content data, gallery lightbox, and SEO metadata. However, the Popular Picks content does not explicitly cover the required category set (notably “specials” and clearly-labeled category cards), and the diff introduces Internet Identity authentication-related hooks/provider which were explicitly disallowed.",
+  "missing_requirements": [
+    {
+      "id": "REQ-5",
+      "requirement": "Popular Picks (highlights) section must showcase key categories/items: tea, coffee, snacks, fast food, and optional specials (with at least those categories represented).",
+      "reason": "The implemented highlights are a list of specific items (e.g., Special Chai, Filter Coffee, Samosa, Veg Sandwich, Pakora Plate, Cold Coffee) and do not clearly include/label all requested categories—especially no explicit “specials” category/card and no explicit category representation for all required groups.",
+      "evidence": [
+        "frontend/src/components/RoyalCafe/data/content.ts",
+        "frontend/src/components/RoyalCafe/sections/HighlightsSection.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Internet Identity (third-party authentication) provider and hooks added (AuthClient / identity management) and wired into the app.",
+      "reason": "BuildRequest explicitly disallows third-party authentication and requires the page to work without login; authentication/identity plumbing was not requested for this marketing site.",
+      "evidence": [
+        "frontend/src/main.tsx",
+        "frontend/src/hooks/useInternetIdentity.ts",
+        "frontend/src/hooks/useActor.ts"
+      ]
+    },
+    {
+      "description": "Backend canister stub (Motoko actor) added.",
+      "reason": "BuildRequest specifies the site should work without any backend data; adding a backend actor was not requested.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Footer attribution link to caffeine.ai added.",
+      "reason": "Not requested in requirements; adds extra branding/attribution unrelated to specified sections/content.",
+      "evidence": [
+        "frontend/src/components/RoyalCafe/Footer.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/RoyalCafe/Footer.tsx",
+    "frontend/src/components/RoyalCafe/NavBar.tsx",
+    "frontend/src/components/RoyalCafe/data/content.ts",
+    "frontend/src/components/RoyalCafe/sections/AboutSection.tsx",
+    "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx",
+    "frontend/src/components/RoyalCafe/sections/GallerySection.tsx",
+    "frontend/src/components/RoyalCafe/sections/HeroSection.tsx",
+    "frontend/src/components/RoyalCafe/sections/HighlightsSection.tsx",
+    "frontend/src/components/RoyalCafe/sections/MenuSection.tsx",
+    "frontend/src/components/RoyalCafe/sections/ReviewsSection.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

@@ -1,0 +1,160 @@
+// Highlights / Popular Picks
+export const highlights = [
+  {
+    name: 'Special Chai',
+    description: 'Our signature blend of aromatic spices and premium tea leaves, brewed to perfection',
+    price: '20',
+    badge: 'Popular'
+  },
+  {
+    name: 'Filter Coffee',
+    description: 'Rich, authentic South Indian filter coffee made fresh for every cup',
+    price: '30',
+    badge: 'Bestseller'
+  },
+  {
+    name: 'Samosa',
+    description: 'Crispy golden samosas filled with spiced potatoes and peas, served hot',
+    price: '15'
+  },
+  {
+    name: 'Veg Sandwich',
+    description: 'Fresh vegetables with tangy chutney in toasted bread',
+    price: '40'
+  },
+  {
+    name: 'Pakora Plate',
+    description: 'Assorted crispy fritters with mint chutney',
+    price: '50'
+  },
+  {
+    name: 'Cold Coffee',
+    description: 'Refreshing iced coffee blended with milk and ice cream',
+    price: '60',
+    badge: 'Refreshing'
+  }
+];
+
+// Menu Categories
+export const menuCategories = [
+  {
+    name: 'Tea & Hot Beverages',
+    items: [
+      { name: 'Special Chai', price: '20', description: 'Our signature masala chai' },
+      { name: 'Ginger Chai', price: '20', description: 'Tea with fresh ginger' },
+      { name: 'Elaichi Chai', price: '20', description: 'Cardamom-flavored tea' },
+      { name: 'Lemon Tea', price: '20', description: 'Refreshing tea with lemon' },
+      { name: 'Green Tea', price: '25', description: 'Healthy green tea' }
+    ]
+  },
+  {
+    name: 'Coffee',
+    items: [
+      { name: 'Filter Coffee', price: '30', description: 'Authentic South Indian style' },
+      { name: 'Black Coffee', price: '25', description: 'Strong and bold' },
+      { name: 'Cold Coffee', price: '60', description: 'Iced coffee with ice cream' },
+      { name: 'Cappuccino', price: '50', description: 'Espresso with steamed milk' }
+    ]
+  },
+  {
+    name: 'Snacks',
+    items: [
+      { name: 'Samosa (2 pcs)', price: '15', description: 'Crispy potato samosas' },
+      { name: 'Pakora Plate', price: '50', description: 'Mixed vegetable fritters' },
+      { name: 'Bread Pakora', price: '30', description: 'Stuffed bread fritters' },
+      { name: 'Aloo Tikki', price: '25', description: 'Spiced potato patties' },
+      { name: 'Spring Roll', price: '40', description: 'Crispy vegetable rolls' }
+    ]
+  },
+  {
+    name: 'Fast Food',
+    items: [
+      { name: 'Veg Sandwich', price: '40', description: 'Grilled vegetable sandwich' },
+      { name: 'Cheese Sandwich', price: '50', description: 'Toasted cheese sandwich' },
+      { name: 'Veg Burger', price: '60', description: 'Veggie patty burger' },
+      { name: 'French Fries', price: '50', description: 'Crispy golden fries' },
+      { name: 'Veg Momos (6 pcs)', price: '60', description: 'Steamed dumplings' }
+    ]
+  }
+];
+
+// Gallery Images
+export const galleryImages = [
+  {
+    src: '/assets/generated/royal-cafe-interior-1.dim_1400x933.png',
+    alt: 'Royal Cafe cozy interior with comfortable seating'
+  },
+  {
+    src: '/assets/generated/royal-cafe-food-1.dim_1400x933.png',
+    alt: 'Fresh chai with delicious snacks'
+  },
+  {
+    src: '/assets/generated/royal-cafe-food-2.dim_1400x933.png',
+    alt: 'Aromatic coffee served fresh'
+  },
+  {
+    src: '/assets/generated/royal-cafe-customers-1.dim_1400x933.png',
+    alt: 'Happy customers enjoying their time at Royal Cafe'
+  },
+  {
+    src: '/assets/generated/royal-cafe-hero.dim_1920x1080.png',
+    alt: 'Royal Cafe signature tea and snacks spread'
+  },
+  {
+    src: '/assets/generated/royal-cafe-logo.dim_512x512.png',
+    alt: 'Royal Cafe logo'
+  }
+];
+
+// Testimonials
+export const testimonials = [
+  {
+    name: 'Rajesh Kumar',
+    location: 'Varpur',
+    quote: 'Best chai in Varpur! The taste is always consistent and the atmosphere is so welcoming. My daily morning stop.'
+  },
+  {
+    name: 'Priya Singh',
+    location: 'Mau',
+    quote: 'Love the samosas here! Fresh, hot, and perfectly spiced. Great place to hang out with friends.'
+  },
+  {
+    name: 'Amit Sharma',
+    location: 'Varpur',
+    quote: 'Royal Cafe has become my favorite spot. Good food, affordable prices, and friendly service. Highly recommend!'
+  },
+  {
+    name: 'Neha Gupta',
+    location: 'Mau',
+    quote: 'The coffee is amazing and the snacks are always fresh. Perfect place for a quick break or meeting friends.'
+  },
+  {
+    name: 'Vikram Yadav',
+    location: 'Varpur',
+    quote: 'Clean, comfortable, and great taste. The staff is very polite. This is the best cafe in our area.'
+  },
+  {
+    name: 'Sunita Devi',
+    location: 'Varpur',
+    quote: 'I bring my family here often. The food quality is excellent and prices are very reasonable. A true gem in Varpur!'
+  }
+];
+
+// Contact Information
+export const contactInfo = {
+  address: {
+    street: 'Varpur',
+    city: 'Mau',
+    state: 'Uttar Pradesh',
+    country: 'India'
+  },
+  phone: '+91 XXXXX XXXXX',
+  email: 'info@royalcafe.com',
+  hours: [
+    'Monday - Sunday',
+    '7:00 AM - 10:00 PM',
+    'Open all days'
+  ],
+  mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28826.84!2d83.56!3d25.95!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39914c1c1c1c1c1c%3A0x1c1c1c1c1c1c1c1c!2sVarpur%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1234567890',
+  mapLink: 'https://maps.google.com/?q=Varpur,Mau,Uttar+Pradesh'
+};

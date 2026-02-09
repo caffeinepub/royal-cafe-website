@@ -1,0 +1,109 @@
+import { useState, useEffect } from 'react';
+import { Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+export function NavBar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  const navLinks = [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'highlights', label: 'Popular' },
+    { id: 'menu', label: 'Menu' },
+    { id: 'gallery', label: 'Gallery' },
+    { id: 'reviews', label: 'Reviews' },
+    { id: 'contact', label: 'Contact' }
+  ];
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-background/95 backdrop-blur-md shadow-md' : 'bg-transparent'
+      }`}
+    >
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <button
+            onClick={() => scrollToSection('home')}
+            className="flex items-center gap-3 group"
+          >
+            <img
+              src="/assets/generated/royal-cafe-logo.dim_512x512.png"
+              alt="Royal Cafe Logo"
+              className="h-12 w-12 object-contain transition-transform group-hover:scale-110"
+            />
+            <span className="font-display text-2xl font-bold text-royal-maroon">
+              Royal Cafe
+            </span>
+          </button>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <Button
+                key={link.id}
+                variant="ghost"
+                onClick={() => scrollToSection(link.id)}
+                className="text-foreground hover:text-royal-maroon hover:bg-royal-cream/50 transition-colors"
+              >
+                {link.label}
+              </Button>
+            ))}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </Button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden pb-4 animate-in slide-in-from-top-2">
+            <div className="flex flex-col gap-2">
+              {navLinks.map((link) => (
+                <Button
+                  key={link.id}
+                  variant="ghost"
+                  onClick={() => scrollToSection(link.id)}
+                  className="justify-start text-foreground hover:text-royal-maroon hover:bg-royal-cream/50"
+                >
+                  {link.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+}

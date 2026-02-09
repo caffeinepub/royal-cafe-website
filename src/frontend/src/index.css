@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.75rem;
+        
+        /* Royal Cafe Color Palette - Light Mode */
+        --background: 0.98 0.01 40;  /* Warm cream */
+        --foreground: 0.25 0.02 30;  /* Deep brown */
+        
+        --card: 1 0 0;  /* Pure white */
+        --card-foreground: 0.25 0.02 30;
+        
+        --popover: 1 0 0;
+        --popover-foreground: 0.25 0.02 30;
+        
+        --primary: 0.35 0.08 20;  /* Deep maroon */
+        --primary-foreground: 0.98 0.01 40;  /* Warm cream */
+        
+        --secondary: 0.95 0.02 50;  /* Light cream */
+        --secondary-foreground: 0.35 0.08 20;
+        
+        --muted: 0.95 0.02 50;
+        --muted-foreground: 0.50 0.02 30;
+        
+        --accent: 0.75 0.12 70;  /* Muted gold */
+        --accent-foreground: 0.25 0.02 30;
+        
+        --destructive: 0.55 0.22 25;
+        --destructive-foreground: 0.98 0.01 40;
+        
+        --border: 0.90 0.02 40;
+        --input: 0.90 0.02 40;
+        --ring: 0.35 0.08 20;
+        
+        /* Custom Royal Cafe Colors */
+        --royal-maroon: 0.35 0.08 20;
+        --royal-cream: 0.98 0.01 40;
+        --royal-gold: 0.75 0.12 70;
+        
+        --chart-1: 0.646 0.222 41.116;
+        --chart-2: 0.6 0.118 184.704;
+        --chart-3: 0.398 0.07 227.392;
+        --chart-4: 0.828 0.189 84.429;
+        --chart-5: 0.769 0.188 70.08;
+    }
+
+    .dark {
+        --background: 0.20 0.02 30;  /* Dark brown */
+        --foreground: 0.98 0.01 40;  /* Warm cream */
+        
+        --card: 0.25 0.02 30;
+        --card-foreground: 0.98 0.01 40;
+        
+        --popover: 0.25 0.02 30;
+        --popover-foreground: 0.98 0.01 40;
+        
+        --primary: 0.75 0.12 70;  /* Muted gold */
+        --primary-foreground: 0.25 0.02 30;
+        
+        --secondary: 0.30 0.02 30;
+        --secondary-foreground: 0.98 0.01 40;
+        
+        --muted: 0.30 0.02 30;
+        --muted-foreground: 0.70 0.02 40;
+        
+        --accent: 0.35 0.08 20;  /* Deep maroon */
+        --accent-foreground: 0.98 0.01 40;
+        
+        --destructive: 0.60 0.22 25;
+        --destructive-foreground: 0.98 0.01 40;
+        
+        --border: 0.30 0.02 30;
+        --input: 0.30 0.02 30;
+        --ring: 0.75 0.12 70;
+        
+        /* Custom Royal Cafe Colors - Dark Mode */
+        --royal-maroon: 0.45 0.10 20;
+        --royal-cream: 0.98 0.01 40;
+        --royal-gold: 0.80 0.15 70;
+    }
+
+    * {
+        @apply border-border;
+    }
+    
+    body {
+        @apply bg-background text-foreground;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Playfair Display', Georgia, serif;
+    }
+}
+
+@layer utilities {
+    .font-display {
+        font-family: 'Playfair Display', Georgia, serif;
+    }
+    
+    .text-royal-maroon {
+        color: oklch(var(--royal-maroon));
+    }
+    
+    .text-royal-cream {
+        color: oklch(var(--royal-cream));
+    }
+    
+    .text-royal-gold {
+        color: oklch(var(--royal-gold));
+    }
+    
+    .bg-royal-maroon {
+        background-color: oklch(var(--royal-maroon));
+    }
+    
+    .bg-royal-cream {
+        background-color: oklch(var(--royal-cream));
+    }
+    
+    .bg-royal-gold {
+        background-color: oklch(var(--royal-gold));
+    }
+    
+    .border-royal-maroon {
+        border-color: oklch(var(--royal-maroon));
+    }
+    
+    .border-royal-cream {
+        border-color: oklch(var(--royal-cream));
+    }
+    
+    .border-royal-gold {
+        border-color: oklch(var(--royal-gold));
+    }
+    
+    .fill-royal-gold {
+        fill: oklch(var(--royal-gold));
+    }
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: oklch(var(--royal-cream));
+}
+
+::-webkit-scrollbar-thumb {
+    background: oklch(var(--royal-maroon));
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: oklch(var(--royal-gold));
+}

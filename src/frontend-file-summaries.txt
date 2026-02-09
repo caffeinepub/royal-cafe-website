@@ -1,0 +1,16 @@
+{
+  "frontend/src/App.tsx": "Main application component that composes all sections of the Royal Cafe single-page website with navigation and footer.",
+  "frontend/src/components/RoyalCafe/NavBar.tsx": "Sticky navigation bar with smooth scroll links to all sections, mobile menu toggle, and Royal Cafe logo.",
+  "frontend/src/components/RoyalCafe/Footer.tsx": "Footer component with cafe info, quick links, contact details, social media icons, and caffeine.ai attribution.",
+  "frontend/src/components/RoyalCafe/sections/HeroSection.tsx": "Hero section with full-screen background image, cafe name, tagline, location, and CTAs that scroll to menu and contact sections.",
+  "frontend/src/components/RoyalCafe/sections/AboutSection.tsx": "About section highlighting Royal Cafe's four key features (quality, atmosphere, pricing, seating) in a card grid layout.",
+  "frontend/src/components/RoyalCafe/sections/HighlightsSection.tsx": "Popular picks section displaying featured menu items with descriptions, prices, and badges in a responsive grid.",
+  "frontend/src/components/RoyalCafe/sections/MenuSection.tsx": "Full menu section organized by categories (tea, coffee, snacks, fast food) with items, descriptions, and prices.",
+  "frontend/src/components/RoyalCafe/sections/GallerySection.tsx": "Photo gallery with responsive grid and modal lightbox for viewing enlarged images on click.",
+  "frontend/src/components/RoyalCafe/sections/ReviewsSection.tsx": "Customer testimonials section displaying reviews with star ratings, quotes, and customer names in a card grid.",
+  "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx": "Contact and location section with address, hours, phone, and embedded Google Maps iframe.",
+  "frontend/src/components/RoyalCafe/data/content.ts": "Centralized data file containing all editable content (highlights, menu items, gallery images, testimonials, contact info).",
+  "frontend/src/index.css": "Global styles with Royal Cafe color palette (maroon, cream, gold), custom fonts (Playfair Display, Inter), and utility classes.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with Royal Cafe custom colors, Playfair Display font family, and design tokens.",
+  "frontend/index.html": "HTML entry point with SEO metadata (title, description) for Royal Cafe website."
+}
