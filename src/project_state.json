@@ -1,15 +1,20 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 3,
+  "projectStateVersion": 17,
   "summary": "Design and build a modern, mobile-friendly, authentic local café website for Royal Cafe (Varpur, Mau, Uttar Pradesh) with a warm/royal cozy aesthetic, clear CTA, menu, gallery, testimonials, and contact/location details including embedded Google Map.",
   "architectural_notes": [
     "Prioritize mobile-first responsive layout and performance since most visitors will be on phones.",
     "Use authentic, local-feeling imagery (avoid overly generic stock look).",
-    "Site should maintain a cozy + royal color palette: warm tones with a touch of elegance."
+    "Site should maintain a cozy + royal color palette: warm tones with a touch of elegance.",
+    "Hero section: add an additional CTA button placed below “Visit Us” labeled “Order by JD” linking to the JustDial ordering page.",
+    "Hero section: add another CTA button beside “Order by JD” labeled “Order by call” linking to tel:+919450814050.",
+    "Admin login/editor access: define how the login code (275101MAU) is validated and ensure it is not exposed publicly in client-side code."
   ],
-  "known_issues": [],
-  "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Warm, photorealistic hero background showing Indian chai/tea glasses and snacks on a café table with cozy lighting (royal-cafe-hero.dim_1920x1080.png)\n- Photorealistic café interior scene with simple seating, warm tones, and welcoming vibe (royal-cafe-interior-1.dim_1400x933.png)\n- Photorealistic close-up of chai with local snacks (e.g., samosa/biscuit) on a plate (royal-cafe-food-1.dim_1400x933.png)\n- Photorealistic close-up of coffee in a cup with light snack (royal-cafe-food-2.dim_1400x933.png)\n- Photorealistic scene of a small group of happy customers in a casual café setting (royal-cafe-customers-1.dim_1400x933.png)\n- Simple elegant logo mark with a crown/tea motif in warm/royal colors, transparent background (royal-cafe-logo.dim_512x512.png)",
+  "known_issues": [
+    "Contact section edit attempt overwrote an existing paragraph element; phone number should be added in a separate place instead of replacing current content.",
+    "Admin login: entering the correct code (275101MAU) does not allow access/redirect to the admin editor page."
+  ],
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-create-a-single-page-mobile-first-marketing-website-for-royal-cafe-varpur-mau-uttar-pradesh-with-clear-scroll-navigation-between-sections-hero-about-highlights-menu-gallery-reviews-and-contact-location",
@@ -90,6 +95,102 @@
         "REQ-10"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-remove-the-gallery-section-from-the-page-layout-so-it-is-no-longer-rendered-between-the-menu-and-reviews-sections",
+      "title": "Remove the Gallery section from the page layout so it is no longer rendered between the Menu and Reviews sections.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-gallery-entry-from-the-top-navigation-so-users-cannot-navigate-scroll-to-a-non-existent-gallery-section",
+      "title": "Remove the Gallery entry from the top navigation so users cannot navigate/scroll to a non-existent `#gallery` section.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-any-footer-gallery-quick-link-and-clean-up-unused-gallery-data-code-so-the-build-has-no-unused-gallery-references",
+      "title": "Remove any footer 'Gallery' quick link and clean up unused Gallery data/code so the build has no unused Gallery references.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-contact-location-section-data-so-the-displayed-phone-number-is-exactly-91-94508-14050-and-ensure-it-appears-as-its-own-phone-line-in-the-contact-card-not-replacing-overwriting-any-existing-paragraph-text-such-as-the-location-address-or-other-copy",
+      "title": "Update the Contact & Location section data so the displayed phone number is exactly “+91 94508 14050”, and ensure it appears as its own phone line in the Contact card (not replacing/overwriting any existing paragraph text such as the location address or other copy).",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-instagram-profile-link-https-www-instagram-com-royal-cafe-mau-to-the-site-s-social-section-s-and-ensure-it-is-reachable-via-an-instagram-icon-link",
+      "title": "Add the Instagram profile link https://www.instagram.com/royal_cafe_mau/ to the site’s social section(s) and ensure it is reachable via an Instagram icon/link.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-facebook-option-link-from-the-site-s-social-contact-areas-so-facebook-is-no-longer-shown-as-an-available-social-platform",
+      "title": "Remove the Facebook option/link from the site’s social/contact areas so Facebook is no longer shown as an available social platform.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-third-call-to-action-button-in-the-hero-section-directly-below-the-existing-visit-us-today-button-labeled-exactly-order-by-jd-and-configure-it-to-open-the-following-justdial-link-in-a-new-browser-tab-https-www-justdial-com-mau-royal-cafe-varpur-9999px547-x547-230912003001-y2a5-bzdet-trkid-term-ncatid-11988211-area-search-royal-20cafe-20in-20mau-20-20order-20food-20online-mncatname-royal-20cafe-ftterm-abd-btn-abd-heading-bd-1-cat-b2b-flag-0-searchfrom-lst-thumbnail",
+      "title": "Add a third call-to-action button in the Hero section directly below the existing “Visit Us Today” button, labeled exactly “Order by JD”, and configure it to open the following JustDial link in a new browser tab: https://www.justdial.com/Mau/Royal-Cafe-Varpur/9999PX547-X547-230912003001-Y2A5_BZDET?trkid=&term=&ncatid=11988211&area=&search=Royal%20Cafe%20in%20Mau%20-%20Order%20Food%20Online&mncatname=Royal%20Cafe&ftterm=&abd_btn=&abd_heading=&bd=1&cat_b2b_flag=0&searchfrom=lst&thumbnail=",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-the-hero-section-cta-area-add-a-new-button-labeled-exactly-order-by-call-positioned-beside-the-existing-order-by-jd-button-and-configure-it-to-open-the-device-phone-dialer-using-a-tel-link-for-the-phone-number-91-94508-14050",
+      "title": "In the Hero section CTA area, add a new button labeled exactly \"Order by call\" positioned beside the existing \"Order by JD\" button, and configure it to open the device phone dialer using a `tel:` link for the phone number \"+91 94508 14050\".",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-admin-login-entry-point-to-the-royal-cafe-website-that-allows-an-administrator-to-enter-the-login-code-275101mau-and-on-success-access-an-admin-only-editor-page",
+      "title": "Add an admin login entry point to the Royal Cafe website that allows an administrator to enter the login code \"275101MAU\" and, on success, access an admin-only editor page.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-admin-only-editor-page-that-allows-updating-the-site-s-editable-content-currently-defined-in-the-frontend-content-source-highlights-menu-categories-items-testimonials-and-contact-info-and-persist-those-edits-so-they-remain-after-page-reload",
+      "title": "Create an admin-only Editor page that allows updating the site’s editable content currently defined in the frontend content source (highlights, menu categories/items, testimonials, and contact info), and persist those edits so they remain after page reload.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-admin-authentication-flow-so-that-entering-the-correct-admin-code-275101mau-actually-authorizes-the-current-caller-and-allows-access-to-the-admin-only-editor-page-no-accessdenied-screen-after-successful-login",
+      "title": "Fix the admin authentication flow so that entering the correct admin code \"275101MAU\" actually authorizes the current caller and allows access to the admin-only editor page (no AccessDenied screen after successful login).",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-frontend-update-adminlogindialog-to-perform-admin-login-against-the-backend-instead-of-only-local-string-checking-and-to-refresh-the-cached-admin-status-query-after-a-successful-login-so-navbar-app-editor-gating-works-reliably",
+      "title": "Frontend: update AdminLoginDialog to perform admin login against the backend (instead of only local string-checking) and to refresh the cached admin status query after a successful login so NavBar/App editor gating works reliably.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -118,12 +219,6 @@
       "status": "pending"
     },
     {
-      "id": "AR-5",
-      "summary": "Small photo gallery showcasing interior, food, and customers to build trust",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
       "id": "AR-6",
       "summary": "Reviews/testimonials section featuring positive local feedback",
       "reqIds": [],
@@ -139,6 +234,52 @@
       "id": "AR-8",
       "summary": "Fast, mobile-friendly responsive design optimized for phone visitors",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Add phone number +91 94508 14050 to the Contact/Location section as a separate line/field (do not overwrite existing paragraph/text)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Add Instagram link/ID (https://www.instagram.com/royal_cafe_mau/) to the site and remove the Facebook option/link from social/contact areas",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Add a new CTA button below the existing “Visit Us” button labeled “Order by JD” that opens the provided JustDial order link",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Add a CTA button beside “Order by JD” labeled exactly “Order by call” that opens the phone dialer (tel:) for +91 94508 14050",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Add an admin login option that unlocks/opens an editor page for the site using a login code (provided: 275101MAU)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Implement Motoko backend support for admin code verification, admin session state, and storing/loading the editable site content as stable data.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Backend: expose an admin-status API used by the frontend and ensure it behaves consistently with content update authorization (i.e., the same rule that allows updateHomePageContent must also make isCallerAdmin return true).",
+      "reqIds": [
+        "REQ-23"
+      ],
       "status": "pending"
     }
   ],

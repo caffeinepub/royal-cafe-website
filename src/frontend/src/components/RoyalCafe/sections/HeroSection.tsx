@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, MapPin, Phone } from 'lucide-react';
 
 export function HeroSection() {
   const scrollToSection = (id: string) => {
@@ -56,23 +56,52 @@ export function HeroSection() {
           </div>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-in fade-in slide-in-from-bottom-4 duration-700 delay-700">
-            <Button
-              size="lg"
-              onClick={() => scrollToSection('menu')}
-              className="bg-royal-maroon hover:bg-royal-maroon/90 text-white px-8 py-6 text-lg font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-            >
-              View Menu
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={() => scrollToSection('contact')}
-              className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-royal-maroon px-8 py-6 text-lg font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-            >
-              Visit Us Today
-            </Button>
+          <div className="flex flex-col gap-4 items-center animate-in fade-in slide-in-from-bottom-4 duration-700 delay-700">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button
+                size="lg"
+                onClick={() => scrollToSection('menu')}
+                className="bg-royal-maroon hover:bg-royal-maroon/90 text-white px-8 py-6 text-lg font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+              >
+                View Menu
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => scrollToSection('contact')}
+                className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-royal-maroon px-8 py-6 text-lg font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+              >
+                Visit Us Today
+              </Button>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button
+                size="lg"
+                variant="outline"
+                asChild
+                className="bg-royal-gold/20 backdrop-blur-sm border-2 border-royal-gold text-white hover:bg-royal-gold hover:text-royal-maroon px-8 py-6 text-lg font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+              >
+                <a
+                  href="https://www.justdial.com/Mau/Royal-Cafe-Varpur/9999PX547-X547-230912003001-Y2A5_BZDET?trkid=&term=&ncatid=11988211&area=&search=Royal%20Cafe%20in%20Mau%20-%20Order%20Food%20Online&mncatname=Royal%20Cafe&ftterm=&abd_btn=&abd_heading=&bd=1&cat_b2b_flag=0&searchfrom=lst&thumbnail="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Order by JD
+                </a>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                asChild
+                className="bg-royal-gold/20 backdrop-blur-sm border-2 border-royal-gold text-white hover:bg-royal-gold hover:text-royal-maroon px-8 py-6 text-lg font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+              >
+                <a href="tel:+919450814050">
+                  <Phone className="mr-2 h-5 w-5" />
+                  Order by call
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

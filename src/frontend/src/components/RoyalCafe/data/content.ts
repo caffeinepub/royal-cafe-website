@@ -1,3 +1,5 @@
+import type { HomePageContent } from '../../../backend';
+
 // Highlights / Popular Picks
 export const highlights = [
   {
@@ -78,34 +80,6 @@ export const menuCategories = [
   }
 ];
 
-// Gallery Images
-export const galleryImages = [
-  {
-    src: '/assets/generated/royal-cafe-interior-1.dim_1400x933.png',
-    alt: 'Royal Cafe cozy interior with comfortable seating'
-  },
-  {
-    src: '/assets/generated/royal-cafe-food-1.dim_1400x933.png',
-    alt: 'Fresh chai with delicious snacks'
-  },
-  {
-    src: '/assets/generated/royal-cafe-food-2.dim_1400x933.png',
-    alt: 'Aromatic coffee served fresh'
-  },
-  {
-    src: '/assets/generated/royal-cafe-customers-1.dim_1400x933.png',
-    alt: 'Happy customers enjoying their time at Royal Cafe'
-  },
-  {
-    src: '/assets/generated/royal-cafe-hero.dim_1920x1080.png',
-    alt: 'Royal Cafe signature tea and snacks spread'
-  },
-  {
-    src: '/assets/generated/royal-cafe-logo.dim_512x512.png',
-    alt: 'Royal Cafe logo'
-  }
-];
-
 // Testimonials
 export const testimonials = [
   {
@@ -148,7 +122,7 @@ export const contactInfo = {
     state: 'Uttar Pradesh',
     country: 'India'
   },
-  phone: '+91 XXXXX XXXXX',
+  phone: '+91 94508 14050',
   email: 'info@royalcafe.com',
   hours: [
     'Monday - Sunday',
@@ -157,4 +131,27 @@ export const contactInfo = {
   ],
   mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28826.84!2d83.56!3d25.95!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39914c1c1c1c1c1c%3A0x1c1c1c1c1c1c1c1c!2sVarpur%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1234567890',
   mapLink: 'https://maps.google.com/?q=Varpur,Mau,Uttar+Pradesh'
+};
+
+// Default content structure for fallback
+export const defaultContent: HomePageContent = {
+  highlights: highlights.map(h => 
+    `${h.name}|${h.description}|${h.price}${h.badge ? `|${h.badge}` : ''}`
+  ),
+  menuCategories: menuCategories.map(cat => ({
+    name: cat.name,
+    items: cat.items.map(item => ({
+      name: item.name,
+      description: item.description,
+      price: item.price
+    }))
+  })),
+  testimonials: testimonials.map(t => 
+    `${t.name}|${t.location}|${t.quote}`
+  ),
+  contactInfo: {
+    address: `${contactInfo.address.street}, ${contactInfo.address.city}, ${contactInfo.address.state}, ${contactInfo.address.country}`,
+    phone: contactInfo.phone,
+    hours: contactInfo.hours.join('\n')
+  }
 };

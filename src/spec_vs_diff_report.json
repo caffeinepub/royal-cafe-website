@@ -1,67 +1,37 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-09T07:21:30.878Z",
-  "summary": "Diff adds a full single-page Royal Cafe marketing site composed of NavBar + Hero/About/Highlights/Menu/Gallery/Reviews/Contact sections with smooth scrolling, themed Tailwind styling, centralized content data, gallery lightbox, and SEO metadata. However, the Popular Picks content does not explicitly cover the required category set (notably “specials” and clearly-labeled category cards), and the diff introduces Internet Identity authentication-related hooks/provider which were explicitly disallowed.",
+  "generatedAt": "2026-02-09T09:21:56.858Z",
+  "summary": "Frontend now gates the editor route using `useAdminAuth()` (showing a loading state, then `AccessDenied` or `EditorPage`). AdminLoginDialog still validates the code locally and then relies on React Query invalidation/refetch to update `isAdmin`. Backend changes shown add an `assertAdmin` helper and keep update endpoints protected, but the diff excerpt does not show the required `isCallerAdmin()` API implementation.",
   "missing_requirements": [
     {
-      "id": "REQ-5",
-      "requirement": "Popular Picks (highlights) section must showcase key categories/items: tea, coffee, snacks, fast food, and optional specials (with at least those categories represented).",
-      "reason": "The implemented highlights are a list of specific items (e.g., Special Chai, Filter Coffee, Samosa, Veg Sandwich, Pakora Plate, Cold Coffee) and do not clearly include/label all requested categories—especially no explicit “specials” category/card and no explicit category representation for all required groups.",
+      "id": "REQ-23",
+      "requirement": "Backend: expose an admin-status API callable as `actor.isCallerAdmin()` that returns true/false (no trap) and matches the same authorization rule used by admin-only update endpoints.",
+      "reason": "The provided backend diff excerpt shows `assertAdmin` and protected `updateHomePageContent`, but does not show any `public query/shared func isCallerAdmin() : async Bool` method; since the frontend calls `actor.isCallerAdmin()` in `frontend/src/hooks/useQueries.ts`, this backend API must exist and behave as specified.",
       "evidence": [
-        "frontend/src/components/RoyalCafe/data/content.ts",
-        "frontend/src/components/RoyalCafe/sections/HighlightsSection.tsx"
-      ]
-    }
-  ],
-  "hallucinated_features": [
-    {
-      "description": "Internet Identity (third-party authentication) provider and hooks added (AuthClient / identity management) and wired into the app.",
-      "reason": "BuildRequest explicitly disallows third-party authentication and requires the page to work without login; authentication/identity plumbing was not requested for this marketing site.",
-      "evidence": [
-        "frontend/src/main.tsx",
-        "frontend/src/hooks/useInternetIdentity.ts",
-        "frontend/src/hooks/useActor.ts"
+        "backend/main.mo (truncated)",
+        "frontend/src/hooks/useQueries.ts"
       ]
     },
     {
-      "description": "Backend canister stub (Motoko actor) added.",
-      "reason": "BuildRequest specifies the site should work without any backend data; adding a backend actor was not requested.",
+      "id": "REQ-24",
+      "requirement": "Frontend: update AdminLoginDialog to perform admin login against the backend (not only local string checking), showing a clear error if backend verification fails.",
+      "reason": "AdminLoginDialog currently checks `code.trim() !== ADMIN_CODE` locally and then stores the token client-side before invalidating/refetching queries; there is no explicit backend verification call on submit (e.g., `actor.adminLogin(code)`), so the verification is still primarily driven by a client-side string check.",
       "evidence": [
-        "backend/main.mo"
-      ]
-    },
-    {
-      "description": "Footer attribution link to caffeine.ai added.",
-      "reason": "Not requested in requirements; adds extra branding/attribution unrelated to specified sections/content.",
-      "evidence": [
-        "frontend/src/components/RoyalCafe/Footer.tsx"
+        "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx (truncated)"
       ]
     }
   ],
-  "confidence": 0.74,
+  "hallucinated_features": [],
+  "confidence": 0.68,
   "changed_files": [
-    "all_files_summary.json",
     "backend/main.mo",
     "frontend-file-summaries.txt",
-    "frontend/index.css",
-    "frontend/index.html",
     "frontend/src/App.tsx",
     "frontend/src/components/RoyalCafe/Footer.tsx",
     "frontend/src/components/RoyalCafe/NavBar.tsx",
-    "frontend/src/components/RoyalCafe/data/content.ts",
-    "frontend/src/components/RoyalCafe/sections/AboutSection.tsx",
-    "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx",
-    "frontend/src/components/RoyalCafe/sections/GallerySection.tsx",
-    "frontend/src/components/RoyalCafe/sections/HeroSection.tsx",
-    "frontend/src/components/RoyalCafe/sections/HighlightsSection.tsx",
-    "frontend/src/components/RoyalCafe/sections/MenuSection.tsx",
-    "frontend/src/components/RoyalCafe/sections/ReviewsSection.tsx",
-    "frontend/src/hooks/useActor.ts",
-    "frontend/src/hooks/useInternetIdentity.ts",
-    "frontend/src/index.css",
-    "frontend/src/main.tsx",
-    "frontend/tailwind.config.js",
+    "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx",
+    "frontend/src/hooks/useQueries.ts",
     "project_state.json"
   ]
 }

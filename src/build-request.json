@@ -1,219 +1,80 @@
 {
   "kind": "build_request",
-  "title": "Royal Cafe (Varpur, Mau) modern mobile-friendly café website",
-  "priority": "normal",
+  "title": "Fix admin login so correct code grants access to the admin editor",
+  "priority": "high",
   "requirements": [
     {
-      "id": "REQ-1",
-      "text": "Create a single-page, mobile-first marketing website for “Royal Cafe, Varpur (Mau, Uttar Pradesh)” with clear scroll navigation between sections: Hero, About, Highlights, Menu, Gallery, Reviews, and Contact/Location.",
-      "target": "frontend",
+      "id": "REQ-22",
+      "text": "Fix the admin authentication flow so that entering the correct admin code \"275101MAU\" actually authorizes the current caller and allows access to the admin-only editor page (no AccessDenied screen after successful login).",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-3"
         ],
         "quotes": [
-          "Create a modern, attractive website for Royal Cafe, Varpur (Mau, Uttar Pradesh)."
+          "not entering admin page by entering coorect code"
         ]
       },
       "acceptanceCriteria": [
-        "Landing page renders all requested sections in a single-page layout with anchor/scroll navigation",
-        "All key sections are reachable on mobile within 2–3 scroll screens from the hero via navigation/CTAs",
-        "Page works without requiring login or any backend data"
+        "From the NavBar or Footer Admin entry, entering exactly \"275101MAU\" results in the EditorPage being shown (not AccessDenied).",
+        "The authorization decision is not purely client-side; the backend must be able to confirm whether the current caller is an admin.",
+        "After successful login, the frontend admin check state updates without requiring a hard reload (i.e., the UI transitions into editor mode immediately)."
       ]
     },
     {
-      "id": "REQ-2",
-      "text": "Implement a coherent visual theme that feels cozy and slightly royal (warm tones with an elegant accent), applied consistently across typography, spacing, buttons, cards, and section backgrounds. Avoid generic template styling.",
-      "target": "frontend",
+      "id": "REQ-23",
+      "text": "Backend: expose an admin-status API used by the frontend and ensure it behaves consistently with content update authorization (i.e., the same rule that allows updateHomePageContent must also make isCallerAdmin return true).",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-3"
         ],
         "quotes": [
-          "The color palette should feel cozy and royal at the same time — warm tones with a touch of elegance.",
-          "The final result should feel authentic, local, and inviting — like a real café people want to visit, not a generic template."
+          "not entering admin page by entering coorect code"
         ]
       },
       "acceptanceCriteria": [
-        "Design uses a consistent warm palette with a subtle “royal” accent (e.g., deep maroon + warm cream + muted gold) across all sections",
-        "Buttons, headings, and cards share consistent styling tokens (sizes, radii, shadows)",
-        "No default/unstyled template components are visibly left in the UI"
+        "The backend provides a callable method that the frontend can use as `actor.isCallerAdmin()` (as used in frontend/src/hooks/useQueries.ts).",
+        "When a caller is not authorized as admin, the method returns false (it must not trap).",
+        "When a caller is authorized as admin, the method returns true.",
+        "Admin-only update endpoints (e.g., updateHomePageContent) remain protected and only succeed for callers recognized as admin by the backend."
       ]
     },
     {
-      "id": "REQ-3",
-      "text": "Build a warm hero section featuring: the café name “Royal Cafe”, the tagline “Fresh Tea, Great Taste, Everyday Moments”, and a clear call-to-action button (primary: “View Menu”; secondary: “Visit Us Today”). Use inviting, local-feeling food/beverage visuals (not overly stock-like).",
+      "id": "REQ-24",
+      "text": "Frontend: update AdminLoginDialog to perform admin login against the backend (instead of only local string-checking) and to refresh the cached admin status query after a successful login so NavBar/App editor gating works reliably.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-3"
         ],
         "quotes": [
-          "The homepage should open with a warm hero section featuring the cafe’s name, a simple tagline like “Fresh Tea, Great Taste, Everyday Moments,” and a clear call-to-action such as “Visit Us Today” or “View Menu.”",
-          "Use inviting food and beverage visuals that feel real and local, not overly stock-heavy."
+          "not entering admin page by entering coorect code"
         ]
       },
       "acceptanceCriteria": [
-        "Hero displays the exact café name and tagline text",
-        "“View Menu” CTA scrolls to the Menu section; “Visit Us Today” scrolls to the Contact/Location section",
-        "Hero contains a prominent visual (image) that matches the warm/local café vibe and is responsive (no cropping issues on common phone widths)"
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Add an “About Royal Cafe” section describing what makes it special in Varpur: quality taste, friendly atmosphere, affordable pricing, and comfortable seating for friends/family. Keep copy simple, honest, and easy to scan.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "introduce Royal Cafe with a short section explaining what makes it special in Varpur — quality taste, friendly atmosphere, affordable pricing, and a comfortable place to sit with friends or family. Keep the content simple, honest, and easy to read."
-        ]
-      },
-      "acceptanceCriteria": [
-        "About section includes the four requested points in readable, scannable layout (short paragraphs and/or bullets)",
-        "Section typography remains legible on mobile without zoom (no overly small text)"
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Add a “Popular Picks” (highlights) section that showcases key categories/items: tea, coffee, snacks, fast food, and optional specials. Present as a small grid of cards with short descriptions and (optional) price placeholders that can be easily edited later.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Highlight popular items like tea, coffee, snacks, fast food, or special items if available."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Highlights section includes at least the requested categories (tea, coffee, snacks, fast food, specials)",
-        "Content is readable and consistent; cards stack correctly on small screens",
-        "All displayed items are editable via a single in-code data list (no hard-to-find scattered text)"
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Create a clean, easy-to-scan Menu section with grouped categories (e.g., Tea, Coffee, Snacks, Fast Food). Include item names and optional price placeholders (clearly indicated as editable) and ensure the layout is optimized for phone viewing.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Include a menu section that is clean and easy to scan"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Menu is grouped by category with clear headings",
-        "On mobile, menu items display in a single readable column without horizontal scrolling",
-        "Menu section is reachable via the hero “View Menu” button"
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Add a small Gallery section showing café interior, food/drinks, and happy customers. Use a responsive grid with an accessible image modal/lightbox or enlarged view on tap.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "followed by a small gallery showing the cafe interior, food, and happy customers to build trust."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Gallery displays at least 6 images total spanning interior, food/drinks, and customers",
-        "Images are responsive and include alt text",
-        "On tap/click, each image can be viewed larger (modal/lightbox or equivalent)"
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "text": "Add a Reviews/Testimonials section showing positive local feedback (3–6 testimonials) with names/initials and short quotes. Keep wording authentic and simple (no exaggerated marketing claims).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Add a reviews or testimonials section showing positive local feedback to reinforce credibility and popularity in the area."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Testimonials section shows at least 3 review cards with short quotes",
-        "Review content reads natural and locally relevant (mentions tea/coffee/snacks/hangout)",
-        "Layout is readable on mobile (no cramped multi-column text)"
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "text": "Add a Contact & Location section that clearly displays: location in “Varpur, Mau, Uttar Pradesh”, business hours, and contact details. Include an embedded Google Map (iframe) for navigation plus a backup “Open in Google Maps” link.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "The website should also clearly display the cafe’s location in Varpur, Mau, business hours, and contact details, with an embedded Google Map for easy navigation."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Section includes explicit text “Varpur, Mau, Uttar Pradesh”",
-        "Business hours and contact details are visible and formatted for quick scanning on mobile",
-        "Google Map embed renders via iframe, and a separate link to open Google Maps is present"
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "text": "Ensure the overall experience is fast and mobile-friendly: responsive layout, optimized images, accessible headings/contrast, and basic SEO metadata (page title/description).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "The overall experience should be fast, mobile-friendly, and easy to use, since most visitors will access it from their phones."
-        ]
-      },
-      "acceptanceCriteria": [
-        "No horizontal scrolling on common phone widths (e.g., 360px)",
-        "Images are served as compressed static assets and do not cause noticeable layout shift",
-        "Document has an appropriate title and meta description for Royal Cafe"
+        "AdminLoginDialog attempts backend verification when the user submits the code, and shows a clear English error message if verification fails.",
+        "On successful verification, the `isAdmin` React Query state (query key ['isAdmin']) is refreshed/invalidated so `useAdminAuth()` returns true without a page reload.",
+        "After successful login, closing/opening the dialog continues to work correctly (no immediate auto-close loops from the Dialog onOpenChange handler)."
       ]
     }
   ],
   "constraints": [
-    "Do not modify files under the immutable frontend paths listed in SYSTEM_CONTEXT (compose existing components instead).",
-    "Do not introduce non-supported frameworks (must remain React + TypeScript + Tailwind + shadcn + React Query).",
-    "No third-party authentication; no external databases."
+    "Respect the single-actor backend architecture: keep all Motoko logic in backend/main.mo.",
+    "Do not modify any frontend files under frontend/src/components/ui or any other paths listed in frontend.immutablePaths."
   ],
   "nonGoals": [
-    "Online ordering, table booking, or payment processing",
-    "Admin dashboard or CMS for editing menu/reviews",
-    "Real-time chat or messaging features"
+    "Adding third-party authentication providers (only Internet Identity is supported).",
+    "Changing the cafe website public content/sections beyond what is needed to fix admin login."
   ],
   "imageRequirements": {
-    "required": [
-      "Warm, photorealistic hero background showing Indian chai/tea glasses and snacks on a café table with cozy lighting (royal-cafe-hero.dim_1920x1080.png)",
-      "Photorealistic café interior scene with simple seating, warm tones, and welcoming vibe (royal-cafe-interior-1.dim_1400x933.png)",
-      "Photorealistic close-up of chai with local snacks (e.g., samosa/biscuit) on a plate (royal-cafe-food-1.dim_1400x933.png)",
-      "Photorealistic close-up of coffee in a cup with light snack (royal-cafe-food-2.dim_1400x933.png)",
-      "Photorealistic scene of a small group of happy customers in a casual café setting (royal-cafe-customers-1.dim_1400x933.png)",
-      "Simple elegant logo mark with a crown/tea motif in warm/royal colors, transparent background (royal-cafe-logo.dim_512x512.png)"
-    ],
+    "required": [],
     "edits": []
   },
   "userProfileUpdate": {
-    "goalsToAdd": [
-      "Build a modern, mobile-friendly café website for Royal Cafe (Varpur, Mau, Uttar Pradesh) with hero, menu, gallery, testimonials, and contact/location map."
-    ],
+    "goalsToAdd": [],
     "goalsToRemove": [],
-    "preferencesToAdd": [
-      "Prefer warm, cozy, slightly royal visual themes for this project; keep copy simple, honest, and locally authentic; optimize for mobile-first browsing."
-    ],
+    "preferencesToAdd": [],
     "preferencesToRemove": [],
     "miscToAdd": [],
     "miscToRemove": [],

@@ -1,7 +1,32 @@
-import { highlights } from '../data/content';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import type { HomePageContent } from '../../../backend';
 
-export function HighlightsSection() {
+interface HighlightsSectionProps {
+  content?: HomePageContent;
+  isLoading?: boolean;
+}
+
+interface ParsedHighlight {
+  name: string;
+  description: string;
+  price: string;
+  badge?: string;
+}
+
+export function HighlightsSection({ content, isLoading }: HighlightsSectionProps) {
+  const parseHighlight = (str: string): ParsedHighlight => {
+    const parts = str.split('|');
+    return {
+      name: parts[0] || '',
+      description: parts[1] || '',
+      price: parts[2] || '',
+      badge: parts[3] || undefined
+    };
+  };
+
+  const highlights = content?.highlights.map(parseHighlight) || [];
+
   return (
     <section id="highlights" className="py-20 md:py-28 bg-background">
       <div className="container mx-auto px-4">
@@ -19,33 +44,45 @@ export function HighlightsSection() {
 
           {/* Highlights Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {highlights.map((item, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-royal-cream"
-              >
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="font-display text-2xl font-bold text-royal-maroon">
-                      {item.name}
-                    </h3>
-                    {item.badge && (
-                      <Badge className="bg-royal-gold text-royal-maroon font-semibold">
-                        {item.badge}
-                      </Badge>
+            {isLoading ? (
+              Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-royal-cream">
+                  <div className="p-6 space-y-3">
+                    <Skeleton className="h-8 w-3/4" />
+                    <Skeleton className="h-16 w-full" />
+                    <Skeleton className="h-6 w-20" />
+                  </div>
+                </div>
+              ))
+            ) : (
+              highlights.map((item, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-royal-cream"
+                >
+                  <div className="p-6">
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="font-display text-2xl font-bold text-royal-maroon">
+                        {item.name}
+                      </h3>
+                      {item.badge && (
+                        <Badge className="bg-royal-gold text-royal-maroon font-semibold">
+                          {item.badge}
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-foreground/70 mb-4 leading-relaxed">
+                      {item.description}
+                    </p>
+                    {item.price && (
+                      <p className="text-royal-maroon font-bold text-xl">
+                        ₹{item.price}
+                      </p>
                     )}
                   </div>
-                  <p className="text-foreground/70 mb-4 leading-relaxed">
-                    {item.description}
-                  </p>
-                  {item.price && (
-                    <p className="text-royal-maroon font-bold text-xl">
-                      ₹{item.price}
-                    </p>
-                  )}
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>

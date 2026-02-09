@@ -8,10 +8,106 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
-export const idlService = IDL.Service({});
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
+export const UserProfile = IDL.Record({ 'name' : IDL.Text });
+export const ContactInfo = IDL.Record({
+  'hours' : IDL.Text,
+  'address' : IDL.Text,
+  'phone' : IDL.Text,
+});
+export const Highlight = IDL.Text;
+export const MenuItem = IDL.Record({
+  'name' : IDL.Text,
+  'description' : IDL.Text,
+  'price' : IDL.Text,
+});
+export const MenuCategory = IDL.Record({
+  'name' : IDL.Text,
+  'items' : IDL.Vec(MenuItem),
+});
+export const Testimonial = IDL.Text;
+export const HomePageContent = IDL.Record({
+  'contactInfo' : ContactInfo,
+  'highlights' : IDL.Vec(Highlight),
+  'menuCategories' : IDL.Vec(MenuCategory),
+  'testimonials' : IDL.Vec(Testimonial),
+});
+
+export const idlService = IDL.Service({
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getContactInfo' : IDL.Func([], [IDL.Opt(ContactInfo)], ['query']),
+  'getFullHomePageContent' : IDL.Func([], [HomePageContent], ['query']),
+  'getHighlights' : IDL.Func([], [IDL.Vec(Highlight)], ['query']),
+  'getMenuCategories' : IDL.Func([], [IDL.Vec(MenuCategory)], ['query']),
+  'getTestimonials' : IDL.Func([], [IDL.Vec(Testimonial)], ['query']),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'updateHomePageContent' : IDL.Func([HomePageContent], [], []),
+});
 
 export const idlInitArgs = [];
 
-export const idlFactory = ({ IDL }) => { return IDL.Service({}); };
+export const idlFactory = ({ IDL }) => {
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text });
+  const ContactInfo = IDL.Record({
+    'hours' : IDL.Text,
+    'address' : IDL.Text,
+    'phone' : IDL.Text,
+  });
+  const Highlight = IDL.Text;
+  const MenuItem = IDL.Record({
+    'name' : IDL.Text,
+    'description' : IDL.Text,
+    'price' : IDL.Text,
+  });
+  const MenuCategory = IDL.Record({
+    'name' : IDL.Text,
+    'items' : IDL.Vec(MenuItem),
+  });
+  const Testimonial = IDL.Text;
+  const HomePageContent = IDL.Record({
+    'contactInfo' : ContactInfo,
+    'highlights' : IDL.Vec(Highlight),
+    'menuCategories' : IDL.Vec(MenuCategory),
+    'testimonials' : IDL.Vec(Testimonial),
+  });
+  
+  return IDL.Service({
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getContactInfo' : IDL.Func([], [IDL.Opt(ContactInfo)], ['query']),
+    'getFullHomePageContent' : IDL.Func([], [HomePageContent], ['query']),
+    'getHighlights' : IDL.Func([], [IDL.Vec(Highlight)], ['query']),
+    'getMenuCategories' : IDL.Func([], [IDL.Vec(MenuCategory)], ['query']),
+    'getTestimonials' : IDL.Func([], [IDL.Vec(Testimonial)], ['query']),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'updateHomePageContent' : IDL.Func([HomePageContent], [], []),
+  });
+};
 
 export const init = ({ IDL }) => { return []; };

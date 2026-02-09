@@ -1,289 +1,62 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Royal Cafe (Varpur, Mau) single-page mobile-first marketing site",
+  "title": "Fix admin login flow to grant editor access after correct code",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Implement a single-page mobile-first landing page with in-page scroll navigation across all required sections.",
+      "id": "REQ-22",
+      "summary": "Ensure correct admin code results in backend-confirmed admin state and immediate access to the admin editor (no AccessDenied after successful login).",
       "acceptanceCriteria": [
-        "Landing page renders all requested sections in a single-page layout with anchor/scroll navigation",
-        "All key sections are reachable on mobile within 2–3 scroll screens from the hero via navigation/CTAs",
-        "Page works without requiring login or any backend data"
+        "From the NavBar or Footer Admin entry, entering exactly \"275101MAU\" results in the EditorPage being shown (not AccessDenied).",
+        "The authorization decision is not purely client-side; the backend must be able to confirm whether the current caller is an admin.",
+        "After successful login, the frontend admin check state updates without requiring a hard reload (i.e., the UI transitions into editor mode immediately)."
       ],
       "file_operations": [
         {
+          "path": "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx",
+          "operation": "modify",
+          "description": "Replace local-only string check flow with a backend-confirmed login flow by persisting the admin secret token (\"caffeineAdminToken\") for the session and forcing React Query to refetch the actor/admin status, so App editor gating sees isAdmin=true immediately after a successful submit. Ensure the implementation relies on the existing authorization mechanism (selected component: authorization) via backend-confirmed admin status, not purely client-side checks. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useActor.ts",
+          "operation": "modify",
+          "description": "Ensure actor creation/refetch correctly reacts to admin-token changes during the session (e.g., after AdminLoginDialog stores the secret), so the actor is reinitialized and subsequent admin checks reflect the updated authorization without a full reload."
+        },
+        {
           "path": "frontend/src/App.tsx",
-          "operation": "create",
-          "description": "Create the single-page layout composing Hero, About, Highlights, Menu, Gallery, Reviews, and Contact/Location sections with in-page anchor IDs and smooth-scroll navigation (top nav and/or section CTAs). Ensure no auth UI is required to view content."
+          "operation": "modify",
+          "description": "Adjust editor entry flow (if needed) to avoid switching into editor view until the refreshed admin status is available, preventing a transient AccessDenied after a successful login-triggered refetch."
+        }
+      ]
+    },
+    {
+      "id": "REQ-24",
+      "summary": "Update AdminLoginDialog to verify admin login via backend state and refresh the cached admin-status query so NavBar/App gating updates immediately and dialog open/close behavior is stable.",
+      "acceptanceCriteria": [
+        "AdminLoginDialog attempts backend verification when the user submits the code, and shows a clear English error message if verification fails.",
+        "On successful verification, the `isAdmin` React Query state (query key ['isAdmin']) is refreshed/invalidated so `useAdminAuth()` returns true without a page reload.",
+        "After successful login, closing/opening the dialog continues to work correctly (no immediate auto-close loops from the Dialog onOpenChange handler)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx",
+          "operation": "modify",
+          "description": "Fix Dialog onOpenChange handling so opening the dialog doesn't immediately trigger a close/reset. On submit: (1) validate the code format/value, (2) perform backend-based verification by triggering an actor re-init + isAdmin refetch (not just local string-checking), (3) show a clear error when backend-confirmed isAdmin remains false, and (4) on success, invalidate/refetch React Query cache for ['isAdmin'] (and any actor query keys) so useAdminAuth() updates immediately. Verify the component's usage instructions before implementing."
         },
         {
           "path": "frontend/src/components/RoyalCafe/NavBar.tsx",
-          "operation": "create",
-          "description": "Add a compact, sticky mobile-first navigation bar with links that scroll to section anchors (Hero/About/Highlights/Menu/Gallery/Reviews/Contact)."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/AboutSection.tsx",
-          "operation": "create",
-          "description": "Create the About section component and ensure it is rendered from the single-page layout."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/HighlightsSection.tsx",
-          "operation": "create",
-          "description": "Create the Popular Picks/Highlights section component and ensure it is rendered from the single-page layout."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/MenuSection.tsx",
-          "operation": "create",
-          "description": "Create the Menu section component and ensure it is rendered from the single-page layout."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/GallerySection.tsx",
-          "operation": "create",
-          "description": "Create the Gallery section component (including enlarged view behavior) and ensure it is rendered from the single-page layout."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/ReviewsSection.tsx",
-          "operation": "create",
-          "description": "Create the Reviews/Testimonials section component and ensure it is rendered from the single-page layout."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx",
-          "operation": "create",
-          "description": "Create the Contact & Location section component (map + details) and ensure it is rendered from the single-page layout."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Apply a cozy, slightly royal visual theme consistently across the site (palette, typography, spacing, buttons, cards, section styling).",
-      "acceptanceCriteria": [
-        "Design uses a consistent warm palette with a subtle “royal” accent (e.g., deep maroon + warm cream + muted gold) across all sections",
-        "Buttons, headings, and cards share consistent styling tokens (sizes, radii, shadows)",
-        "No default/unstyled template components are visibly left in the UI"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "create",
-          "description": "Define global design tokens and base styles using Tailwind layers (e.g., CSS variables for warm cream background, deep maroon primary, muted gold accent; consistent radii/shadows; typography defaults) to achieve a cozy/royal feel."
-        },
-        {
-          "path": "frontend/tailwind.config.js",
           "operation": "modify",
-          "description": "Extend theme configuration to support the Royal Cafe palette/accents and consistent spacing/shadow utilities used across sections (keeping React + TypeScript + Tailwind setup intact)."
+          "description": "Ensure NavBar's Admin/Editor button behavior remains consistent with the refreshed ['isAdmin'] query state after login (no stale isAdmin causing the dialog to reopen or the editor to be denied)."
         },
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/components/RoyalCafe/Footer.tsx",
           "operation": "modify",
-          "description": "Apply consistent section backgrounds, typography scale, button styles, and card styling across all sections using the shared theme tokens/classes (avoid generic template look)."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Build the hero section with exact café name/tagline, two CTAs that scroll to Menu and Contact, and a warm/local-feeling hero image.",
-      "acceptanceCriteria": [
-        "Hero displays the exact café name and tagline text",
-        "“View Menu” CTA scrolls to the Menu section; “Visit Us Today” scrolls to the Contact/Location section",
-        "Hero contains a prominent visual (image) that matches the warm/local café vibe and is responsive (no cropping issues on common phone widths)"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/HeroSection.tsx",
-          "operation": "create",
-          "description": "Create the Hero section with the exact text “Royal Cafe” and “Fresh Tea, Great Taste, Everyday Moments”, plus primary/secondary CTAs wired to scroll to Menu and Contact/Location. Use the hero image asset at frontend/public/assets/generated/royal-cafe-hero.dim_1920x1080.png with responsive sizing and appropriate alt text."
+          "description": "Ensure Footer's Admin button behavior remains consistent with the refreshed ['isAdmin'] query state after login (no stale isAdmin causing the dialog to reopen or the editor to be denied)."
         },
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Wire HeroSection into the single-page layout at the top and ensure CTA scroll targets match the Menu and Contact/Location section anchor IDs."
-        },
-        {
-          "path": "frontend/public/assets/generated/royal-cafe-hero.dim_1920x1080.png",
-          "operation": "create",
-          "description": "Add the generated hero background image as a static frontend asset at the exact path frontend/public/assets/generated/royal-cafe-hero.dim_1920x1080.png."
-        },
-        {
-          "path": "frontend/public/assets/generated/royal-cafe-logo.dim_512x512.png",
-          "operation": "create",
-          "description": "Add the generated logo as a static frontend asset at the exact path frontend/public/assets/generated/royal-cafe-logo.dim_512x512.png and use it in the hero/nav branding."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Add an easy-to-scan About section highlighting quality taste, friendly atmosphere, affordable pricing, and comfortable seating.",
-      "acceptanceCriteria": [
-        "About section includes the four requested points in readable, scannable layout (short paragraphs and/or bullets)",
-        "Section typography remains legible on mobile without zoom (no overly small text)"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/AboutSection.tsx",
-          "operation": "modify",
-          "description": "Implement concise, locally authentic About copy that explicitly covers: quality taste, friendly atmosphere, affordable pricing, and comfortable seating for friends/family, formatted for quick scanning on mobile."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Ensure the About section appears after the Hero and is reachable via navigation/scroll anchors."
-        }
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "summary": "Create a Popular Picks (Highlights) grid of editable cards for tea, coffee, snacks, fast food, and specials.",
-      "acceptanceCriteria": [
-        "Highlights section includes at least the requested categories (tea, coffee, snacks, fast food, specials)",
-        "Content is readable and consistent; cards stack correctly on small screens",
-        "All displayed items are editable via a single in-code data list (no hard-to-find scattered text)"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/HighlightsSection.tsx",
-          "operation": "modify",
-          "description": "Implement a responsive card grid for Popular Picks including tea, coffee, snacks, fast food, and specials. Keep all highlight items in a single exported in-code data list within the file (or imported from a single data module) with short descriptions and optional editable price placeholders."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/data/content.ts",
-          "operation": "create",
-          "description": "Centralize editable in-code data lists (highlights, menu categories/items, gallery images, testimonials, hours/contact) so updates are easy and not scattered."
-        }
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "summary": "Implement a grouped, phone-optimized Menu section with item names and clearly editable price placeholders.",
-      "acceptanceCriteria": [
-        "Menu is grouped by category with clear headings",
-        "On mobile, menu items display in a single readable column without horizontal scrolling",
-        "Menu section is reachable via the hero “View Menu” button"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/MenuSection.tsx",
-          "operation": "modify",
-          "description": "Render menu grouped by category (Tea, Coffee, Snacks, Fast Food) using a single-column, easy-to-scan mobile layout. Pull items from the centralized data list and show optional price placeholders clearly indicated as editable."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/HeroSection.tsx",
-          "operation": "modify",
-          "description": "Ensure the “View Menu” CTA scrolls to the Menu section anchor and works reliably on mobile."
-        }
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "summary": "Add a responsive Gallery grid with at least 6 images and an accessible enlarged view on tap/click.",
-      "acceptanceCriteria": [
-        "Gallery displays at least 6 images total spanning interior, food/drinks, and customers",
-        "Images are responsive and include alt text",
-        "On tap/click, each image can be viewed larger (modal/lightbox or equivalent)"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/GallerySection.tsx",
-          "operation": "modify",
-          "description": "Implement a responsive image grid with alt text and a tap/click enlarged view (lightbox-style modal) that supports keyboard escape/close and focus management basics."
-        },
-        {
-          "path": "frontend/public/assets/generated/royal-cafe-interior-1.dim_1400x933.png",
-          "operation": "create",
-          "description": "Add the generated gallery image as a static frontend asset at frontend/public/assets/generated/royal-cafe-interior-1.dim_1400x933.png."
-        },
-        {
-          "path": "frontend/public/assets/generated/royal-cafe-food-1.dim_1400x933.png",
-          "operation": "create",
-          "description": "Add the generated gallery image as a static frontend asset at frontend/public/assets/generated/royal-cafe-food-1.dim_1400x933.png."
-        },
-        {
-          "path": "frontend/public/assets/generated/royal-cafe-food-2.dim_1400x933.png",
-          "operation": "create",
-          "description": "Add the generated gallery image as a static frontend asset at frontend/public/assets/generated/royal-cafe-food-2.dim_1400x933.png."
-        },
-        {
-          "path": "frontend/public/assets/generated/royal-cafe-customers-1.dim_1400x933.png",
-          "operation": "create",
-          "description": "Add the generated gallery image as a static frontend asset at frontend/public/assets/generated/royal-cafe-customers-1.dim_1400x933.png."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/data/content.ts",
-          "operation": "modify",
-          "description": "Define the gallery image list (at least 6 entries) referencing the generated assets above plus two additional locally-sourced/static images (also placed under frontend/public/assets/) and provide descriptive alt text for each."
-        },
-        {
-          "path": "frontend/public/assets/README.md",
-          "operation": "create",
-          "description": "Document where additional non-generated gallery images (2+) are stored under frontend/public/assets/ and remind maintainers to compress images and keep alt text meaningful."
-        }
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "summary": "Add a locally authentic testimonials section with 3–6 review cards (names/initials + short quotes).",
-      "acceptanceCriteria": [
-        "Testimonials section shows at least 3 review cards with short quotes",
-        "Review content reads natural and locally relevant (mentions tea/coffee/snacks/hangout)",
-        "Layout is readable on mobile (no cramped multi-column text)"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/ReviewsSection.tsx",
-          "operation": "modify",
-          "description": "Render 3–6 testimonial cards from the centralized data list, using simple authentic wording and a mobile-friendly single-column layout (or 2-column only on larger screens)."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/data/content.ts",
-          "operation": "modify",
-          "description": "Add locally relevant testimonial data (names/initials + short quotes) that avoids exaggerated marketing claims."
-        }
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "summary": "Implement a Contact & Location section with address text, hours, contact details, Google Map iframe embed, and an “Open in Google Maps” link.",
-      "acceptanceCriteria": [
-        "Section includes explicit text “Varpur, Mau, Uttar Pradesh”",
-        "Business hours and contact details are visible and formatted for quick scanning on mobile",
-        "Google Map embed renders via iframe, and a separate link to open Google Maps is present"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx",
-          "operation": "modify",
-          "description": "Add scannable address/contact/hours blocks (explicitly including “Varpur, Mau, Uttar Pradesh”), embed a Google Map via iframe, and provide a backup “Open in Google Maps” link for navigation."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/data/content.ts",
-          "operation": "modify",
-          "description": "Centralize contact details, business hours, and map link/embed parameters in the single data module for easy editing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "summary": "Ensure responsive performance, accessibility basics, and SEO metadata (title/description) for the single-page site.",
-      "acceptanceCriteria": [
-        "No horizontal scrolling on common phone widths (e.g., 360px)",
-        "Images are served as compressed static assets and do not cause noticeable layout shift",
-        "Document has an appropriate title and meta description for Royal Cafe"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/index.html",
-          "operation": "modify",
-          "description": "Update the document title and add a meta description suitable for “Royal Cafe, Varpur (Mau, Uttar Pradesh)” (single-page café marketing site)."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Audit and adjust layout to prevent horizontal scrolling at ~360px widths (container padding, grids, images) and ensure headings/contrast are accessible and consistent across sections."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/GallerySection.tsx",
-          "operation": "modify",
-          "description": "Ensure gallery/hero images use explicit sizing/aspect-ratio friendly layout to minimize layout shift and use lazy loading where appropriate."
+          "description": "If necessary, refine the isAdmin query behavior to better support immediate post-login transitions (e.g., ensure it can be safely invalidated/refetched and does not incorrectly cache false across actor changes)."
         }
       ]
     }

@@ -10,7 +10,44 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
-export interface _SERVICE {}
+export interface ContactInfo {
+  'hours' : string,
+  'address' : string,
+  'phone' : string,
+}
+export type Highlight = string;
+export interface HomePageContent {
+  'contactInfo' : ContactInfo,
+  'highlights' : Array<Highlight>,
+  'menuCategories' : Array<MenuCategory>,
+  'testimonials' : Array<Testimonial>,
+}
+export interface MenuCategory { 'name' : string, 'items' : Array<MenuItem> }
+export interface MenuItem {
+  'name' : string,
+  'description' : string,
+  'price' : string,
+}
+export type Testimonial = string;
+export interface UserProfile { 'name' : string }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
+export interface _SERVICE {
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getContactInfo' : ActorMethod<[], [] | [ContactInfo]>,
+  'getFullHomePageContent' : ActorMethod<[], HomePageContent>,
+  'getHighlights' : ActorMethod<[], Array<Highlight>>,
+  'getMenuCategories' : ActorMethod<[], Array<MenuCategory>>,
+  'getTestimonials' : ActorMethod<[], Array<Testimonial>>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'updateHomePageContent' : ActorMethod<[HomePageContent], undefined>,
+}
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];
 export declare const idlFactory: IDL.InterfaceFactory;
