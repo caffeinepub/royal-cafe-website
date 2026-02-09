@@ -7,8 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, Save, Loader2, CheckCircle, AlertCircle, Plus, Trash2 } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { ArrowLeft, Save, Loader2, CheckCircle, AlertCircle, Plus, Trash2, Globe, GlobeLock } from 'lucide-react';
 import { useHomePageContent } from '../../../hooks/useHomePageContent';
+import { useGetPublishState, useSetPublishState } from '../../../hooks/useQueries';
 import type { HomePageContent, MenuItem, MenuCategory } from '../../../backend';
 
 interface EditorPageProps {
@@ -23,8 +25,11 @@ interface ParsedTestimonial {
 
 export function EditorPage({ onExit }: EditorPageProps) {
   const { content, isLoading, saveContent, isSaving, saveError } = useHomePageContent();
+  const { data: isPublished, isLoading: publishStateLoading } = useGetPublishState();
+  const { mutate: setPublishState, isPending: isSettingPublishState } = useSetPublishState();
   const [editedContent, setEditedContent] = useState<HomePageContent | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [publishSuccess, setPublishSuccess] = useState(false);
 
   useEffect(() => {
     if (content && !editedContent) {
@@ -55,6 +60,18 @@ export function EditorPage({ onExit }: EditorPageProps) {
     } catch (error) {
       console.error('Save error:', error);
     }
+  };
+
+  const handlePublishStateChange = (newState: boolean) => {
+    setPublishState(newState, {
+      onSuccess: () => {
+        setPublishSuccess(true);
+        setTimeout(() => setPublishSuccess(false), 3000);
+      },
+      onError: (error) => {
+        console.error('Error updating publish state:', error);
+      }
+    });
   };
 
   if (isLoading || !editedContent) {
@@ -122,6 +139,15 @@ export function EditorPage({ onExit }: EditorPageProps) {
           </Alert>
         )}
 
+        {publishSuccess && (
+          <Alert className="mb-6 bg-green-50 border-green-200">
+            <CheckCircle className="h-4 w-4 text-green-600" />
+            <AlertDescription className="text-green-800">
+              Publish state updated successfully!
+            </AlertDescription>
+          </Alert>
+        )}
+
         {saveError && (
           <Alert className="mb-6 bg-red-50 border-red-200">
             <AlertCircle className="h-4 w-4 text-red-600" />
@@ -130,6 +156,49 @@ export function EditorPage({ onExit }: EditorPageProps) {
             </AlertDescription>
           </Alert>
         )}
+
+        {/* Publish State Control */}
+        <Card className="mb-6 border-royal-maroon/20">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              {isPublished ? (
+                <Globe className="h-5 w-5 text-green-600" />
+              ) : (
+                <GlobeLock className="h-5 w-5 text-orange-600" />
+              )}
+              Site Status
+            </CardTitle>
+            <CardDescription>
+              Control whether the site is visible to the public
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between p-4 bg-royal-cream/20 rounded-lg">
+              <div className="space-y-1">
+                <p className="font-medium text-foreground">
+                  {isPublished ? 'Site is Published' : 'Site is Unpublished'}
+                </p>
+                <p className="text-sm text-foreground/60">
+                  {isPublished 
+                    ? 'Your site is live and visible to all visitors'
+                    : 'Your site is in maintenance mode. Only admins can access it.'}
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <Label htmlFor="publish-toggle" className="text-sm font-medium">
+                  {isPublished ? 'Published' : 'Unpublished'}
+                </Label>
+                <Switch
+                  id="publish-toggle"
+                  checked={isPublished ?? true}
+                  onCheckedChange={handlePublishStateChange}
+                  disabled={publishStateLoading || isSettingPublishState}
+                  className="data-[state=checked]:bg-green-600"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         <Tabs defaultValue="menu" className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-8">
@@ -156,129 +225,94 @@ export function EditorPage({ onExit }: EditorPageProps) {
                         onChange={(e) => {
                           const newCategories = [...editedContent.menuCategories];
                           newCategories[catIndex].name = e.target.value;
-                          setEditedContent({
-                            ...editedContent,
-                            menuCategories: newCategories
-                          });
+                          setEditedContent({ ...editedContent, menuCategories: newCategories });
                         }}
-                        className="font-semibold text-lg max-w-md"
+                        className="font-semibold text-lg"
                         placeholder="Category name"
                       />
                       <Button
-                        variant="destructive"
+                        variant="ghost"
                         size="sm"
                         onClick={() => {
-                          const newCategories = editedContent.menuCategories.filter(
-                            (_, i) => i !== catIndex
-                          );
-                          setEditedContent({
-                            ...editedContent,
-                            menuCategories: newCategories
-                          });
+                          const newCategories = editedContent.menuCategories.filter((_, i) => i !== catIndex);
+                          setEditedContent({ ...editedContent, menuCategories: newCategories });
                         }}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
 
-                    <div className="space-y-3 pl-4">
+                    <div className="space-y-3">
                       {category.items.map((item, itemIndex) => (
-                        <div
-                          key={itemIndex}
-                          className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start bg-royal-cream/20 p-3 rounded"
-                        >
+                        <div key={itemIndex} className="grid grid-cols-12 gap-2 items-start">
                           <Input
                             value={item.name}
                             onChange={(e) => {
                               const newCategories = [...editedContent.menuCategories];
                               newCategories[catIndex].items[itemIndex].name = e.target.value;
-                              setEditedContent({
-                                ...editedContent,
-                                menuCategories: newCategories
-                              });
+                              setEditedContent({ ...editedContent, menuCategories: newCategories });
                             }}
                             placeholder="Item name"
-                            className="md:col-span-3"
+                            className="col-span-4"
                           />
                           <Input
                             value={item.description}
                             onChange={(e) => {
                               const newCategories = [...editedContent.menuCategories];
                               newCategories[catIndex].items[itemIndex].description = e.target.value;
-                              setEditedContent({
-                                ...editedContent,
-                                menuCategories: newCategories
-                              });
+                              setEditedContent({ ...editedContent, menuCategories: newCategories });
                             }}
                             placeholder="Description"
-                            className="md:col-span-6"
+                            className="col-span-5"
                           />
                           <Input
                             value={item.price}
                             onChange={(e) => {
                               const newCategories = [...editedContent.menuCategories];
                               newCategories[catIndex].items[itemIndex].price = e.target.value;
-                              setEditedContent({
-                                ...editedContent,
-                                menuCategories: newCategories
-                              });
+                              setEditedContent({ ...editedContent, menuCategories: newCategories });
                             }}
                             placeholder="Price"
-                            className="md:col-span-2"
+                            className="col-span-2"
                           />
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => {
                               const newCategories = [...editedContent.menuCategories];
-                              newCategories[catIndex].items = newCategories[catIndex].items.filter(
-                                (_, i) => i !== itemIndex
-                              );
-                              setEditedContent({
-                                ...editedContent,
-                                menuCategories: newCategories
-                              });
+                              newCategories[catIndex].items = newCategories[catIndex].items.filter((_, i) => i !== itemIndex);
+                              setEditedContent({ ...editedContent, menuCategories: newCategories });
                             }}
-                            className="md:col-span-1"
+                            className="col-span-1 text-red-600 hover:text-red-700 hover:bg-red-50"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
                       ))}
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          const newCategories = [...editedContent.menuCategories];
-                          newCategories[catIndex].items.push({
-                            name: '',
-                            description: '',
-                            price: ''
-                          });
-                          setEditedContent({
-                            ...editedContent,
-                            menuCategories: newCategories
-                          });
-                        }}
-                        className="w-full"
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Item
-                      </Button>
                     </div>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const newCategories = [...editedContent.menuCategories];
+                        newCategories[catIndex].items.push({ name: '', description: '', price: '' });
+                        setEditedContent({ ...editedContent, menuCategories: newCategories });
+                      }}
+                      className="w-full"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Item
+                    </Button>
                   </div>
                 ))}
 
                 <Button
                   variant="outline"
                   onClick={() => {
-                    setEditedContent({
-                      ...editedContent,
-                      menuCategories: [
-                        ...editedContent.menuCategories,
-                        { name: 'New Category', items: [] }
-                      ]
-                    });
+                    const newCategories = [...editedContent.menuCategories, { name: '', items: [] }];
+                    setEditedContent({ ...editedContent, menuCategories: newCategories });
                   }}
                   className="w-full"
                 >
@@ -302,25 +336,24 @@ export function EditorPage({ onExit }: EditorPageProps) {
                 {testimonials.map((testimonial, index) => (
                   <div key={index} className="border rounded-lg p-4 space-y-3">
                     <div className="flex items-center justify-between">
-                      <h4 className="font-semibold">Testimonial {index + 1}</h4>
+                      <h4 className="font-semibold text-sm text-foreground/60">Testimonial {index + 1}</h4>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => {
-                          const newTestimonials = testimonials.filter((_, i) => i !== index);
-                          setEditedContent({
-                            ...editedContent,
-                            testimonials: newTestimonials.map(serializeTestimonial)
-                          });
+                          const newTestimonials = editedContent.testimonials.filter((_, i) => i !== index);
+                          setEditedContent({ ...editedContent, testimonials: newTestimonials });
                         }}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <Label>Name</Label>
+                        <Label htmlFor={`testimonial-name-${index}`}>Name</Label>
                         <Input
+                          id={`testimonial-name-${index}`}
                           value={testimonial.name}
                           onChange={(e) => {
                             const newTestimonials = [...testimonials];
@@ -334,8 +367,9 @@ export function EditorPage({ onExit }: EditorPageProps) {
                         />
                       </div>
                       <div>
-                        <Label>Location</Label>
+                        <Label htmlFor={`testimonial-location-${index}`}>Location</Label>
                         <Input
+                          id={`testimonial-location-${index}`}
                           value={testimonial.location}
                           onChange={(e) => {
                             const newTestimonials = [...testimonials];
@@ -350,8 +384,9 @@ export function EditorPage({ onExit }: EditorPageProps) {
                       </div>
                     </div>
                     <div>
-                      <Label>Quote</Label>
+                      <Label htmlFor={`testimonial-quote-${index}`}>Quote</Label>
                       <Textarea
+                        id={`testimonial-quote-${index}`}
                         value={testimonial.quote}
                         onChange={(e) => {
                           const newTestimonials = [...testimonials];
@@ -371,10 +406,7 @@ export function EditorPage({ onExit }: EditorPageProps) {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    const newTestimonials = [
-                      ...testimonials,
-                      { name: '', location: '', quote: '' }
-                    ];
+                    const newTestimonials = [...testimonials, { name: '', location: '', quote: '' }];
                     setEditedContent({
                       ...editedContent,
                       testimonials: newTestimonials.map(serializeTestimonial)
@@ -400,8 +432,9 @@ export function EditorPage({ onExit }: EditorPageProps) {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label>Address</Label>
-                  <Textarea
+                  <Label htmlFor="contact-address">Address</Label>
+                  <Input
+                    id="contact-address"
                     value={editedContent.contactInfo.address}
                     onChange={(e) => {
                       setEditedContent({
@@ -413,13 +446,16 @@ export function EditorPage({ onExit }: EditorPageProps) {
                       });
                     }}
                     placeholder="Full address"
-                    rows={3}
                   />
+                  <p className="text-xs text-foreground/60 mt-1">
+                    Enter the complete address (e.g., Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh)
+                  </p>
                 </div>
 
                 <div>
-                  <Label>Phone</Label>
+                  <Label htmlFor="contact-phone">Phone Number</Label>
                   <Input
+                    id="contact-phone"
                     value={editedContent.contactInfo.phone}
                     onChange={(e) => {
                       setEditedContent({
@@ -432,11 +468,15 @@ export function EditorPage({ onExit }: EditorPageProps) {
                     }}
                     placeholder="Phone number"
                   />
+                  <p className="text-xs text-foreground/60 mt-1">
+                    Include country code (e.g., +91 94508 14050)
+                  </p>
                 </div>
 
                 <div>
-                  <Label>Business Hours</Label>
+                  <Label htmlFor="contact-hours">Business Hours</Label>
                   <Textarea
+                    id="contact-hours"
                     value={editedContent.contactInfo.hours}
                     onChange={(e) => {
                       setEditedContent({
@@ -447,11 +487,14 @@ export function EditorPage({ onExit }: EditorPageProps) {
                         }
                       });
                     }}
-                    placeholder="Business hours (one line per entry)"
+                    placeholder="Business hours"
                     rows={4}
                   />
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Enter each line separately (e.g., "Monday - Sunday" on one line, "10:00 am to 10:00 pm" on the next)
+                  <p className="text-xs text-foreground/60 mt-1">
+                    Enter each line separately. Example:<br />
+                    Monday - Sunday<br />
+                    10:00 am to 10:00 pm<br />
+                    Open all days
                   </p>
                 </div>
               </CardContent>

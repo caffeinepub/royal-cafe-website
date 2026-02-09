@@ -1,16 +1,19 @@
 import Map "mo:core/Map";
 import Nat "mo:core/Nat";
 import Text "mo:core/Text";
-import Iter "mo:core/Iter";
 import Principal "mo:core/Principal";
-import MixinAuthorization "authorization/MixinAuthorization";
-import AccessControl "authorization/access-control";
+import Iter "mo:core/Iter";
 import Runtime "mo:core/Runtime";
 
+import MixinAuthorization "authorization/MixinAuthorization";
+import AccessControl "authorization/access-control";
 
 // specify the data migration function in with-clause
 
 actor {
+  // State
+  var isPublished = true;
+
   // Authorization
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
@@ -54,9 +57,19 @@ actor {
 
   // Helper function for admin authorization
   func assertAdmin(caller : Principal) {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+    if (not AccessControl.hasPermission(accessControlState, caller, #admin)) {
       Runtime.trap("Unauthorized: Only admin can perform this action");
     };
+  };
+
+  // Publish state endpoints
+  public shared ({ caller }) func setPublishState(publishState : Bool) : async () {
+    assertAdmin(caller);
+    isPublished := publishState;
+  };
+
+  public query func getPublishState() : async Bool {
+    isPublished;
   };
 
   // User profile endpoints
@@ -100,9 +113,7 @@ actor {
 
   // Admin endpoint to update content
   public shared ({ caller }) func updateHomePageContent(newContent : HomePageContent) : async () {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
-      Runtime.trap("Unauthorized: Only admin can perform this action");
-    };
+    assertAdmin(caller);
 
     menuCategories.clear();
     for (category in newContent.menuCategories.values()) {

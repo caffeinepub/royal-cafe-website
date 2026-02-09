@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 27,
+  "projectStateVersion": 31,
   "summary": "Design and build a modern, mobile-friendly, authentic local café website for Royal Cafe (Varpur, Mau, Uttar Pradesh) with a warm/royal cozy aesthetic, clear CTA, menu, gallery, testimonials, and contact/location details including embedded Google Map.",
   "architectural_notes": [
     "Prioritize mobile-first responsive layout and performance since most visitors will be on phones.",
@@ -293,6 +293,46 @@
         "REQ-39"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-update-the-public-frontend-experience-so-that-when-the-backend-publish-state-is-unpublished-visitors-see-a-dedicated-site-temporarily-unavailable-page-instead-of-the-normal-homepage-sections",
+      "title": "Update the public frontend experience so that when the backend publish state is \"unpublished\", visitors see a dedicated \"Site temporarily unavailable\" page instead of the normal homepage sections.",
+      "reqIds": [
+        "REQ-41"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-simple-control-in-the-existing-admin-editor-page-to-publish-unpublish-the-site-backed-by-the-backend-publish-state-apis",
+      "title": "Add a simple control in the existing admin Editor page to publish/unpublish the site, backed by the backend publish state APIs.",
+      "reqIds": [
+        "REQ-42"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-public-facing-footer-visit-us-block-to-display-the-cafe-s-address-phone-number-and-business-hours-in-addition-to-the-existing-location-text-using-the-editable-homepage-content-contactinfo-values-when-available-and-falling-back-to-the-existing-defaults-when-not",
+      "title": "Update the public-facing footer \"Visit Us\" block to display the cafe's address, phone number, and business hours (in addition to the existing location text), using the editable homepage content `contactInfo` values when available and falling back to the existing defaults when not.",
+      "reqIds": [
+        "REQ-43"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-admin-editor-contact-info-tab-allows-editing-and-saving-all-three-fields-address-phone-and-business-hours-without-overwriting-unrelated-contact-location-copy-and-persists-these-updates-via-the-existing-homepage-content-save-flow",
+      "title": "Ensure the admin Editor \"Contact Info\" tab allows editing and saving all three fields—address, phone, and business hours—without overwriting unrelated contact/location copy, and persists these updates via the existing homepage content save flow.",
+      "reqIds": [
+        "REQ-44"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-that-the-public-contact-location-section-renders-address-phone-and-hours-from-backend-provided-homepagecontent-contactinfo-and-that-each-value-is-displayed-in-the-correct-dedicated-ui-area-address-card-contact-card-hours-card-without-any-field-overwriting-another",
+      "title": "Verify that the public Contact & Location section renders address, phone, and hours from backend-provided `HomePageContent.contactInfo` and that each value is displayed in the correct dedicated UI area (address card, contact card, hours card) without any field overwriting another.",
+      "reqIds": [
+        "REQ-45"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -412,6 +452,20 @@
       "id": "AR-29",
       "summary": "Remove the Instagram ID/link option from the site’s social/contact areas (do not show Instagram)",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-30",
+      "summary": "Unpublish the Royal Cafe website (take the current production deployment offline/unavailable)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-31",
+      "summary": "Add an admin-controlled site publish state in the backend so the Royal Cafe website can be unpublished (made unavailable to the public) without needing to change infrastructure deployment.",
+      "reqIds": [
+        "REQ-40"
+      ],
       "status": "pending"
     }
   ],

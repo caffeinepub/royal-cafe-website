@@ -2,28 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-the-contact-location-content-so-the-displayed-values-are-contact-number-91-94508-14050-location-address-royal-cafe-street-1-varpur-mau-uttar-pradesh-ensure-these-values-render-in-the-existing-contactlocationsection-without-overwriting-other-copy-and-ensure-the-phone-number-remains-its-own-dedicated-phone-line",
-      "featureTitle": "Update the Contact & Location content so the displayed values are:\n- Contact number: \"+91 94508 14050\"\n- Location/address: \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\"\nEnsure these values render in the existing ContactLocationSection without overwriting other copy, and ensure the phone number remains its own dedicated phone line.",
-      "files": [
-        "frontend/src/components/RoyalCafe/data/content.ts",
-        "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
-      ],
-      "testIds": [
-        "REQ-38"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-remove-the-instagram-option-from-the-site-so-instagram-is-no-longer-shown-as-an-available-social-platform-including-removing-the-instagram-icon-link-in-the-footer-and-any-other-social-contact-ui-that-exposes-instagram",
-      "featureTitle": "Remove the Instagram option from the site so Instagram is no longer shown as an available social platform (including removing the Instagram icon/link in the footer and any other social/contact UI that exposes Instagram).",
+      "featureId": "feature-update-the-public-facing-footer-visit-us-block-to-display-the-cafe-s-address-phone-number-and-business-hours-in-addition-to-the-existing-location-text-using-the-editable-homepage-content-contactinfo-values-when-available-and-falling-back-to-the-existing-defaults-when-not",
+      "featureTitle": "Update the public-facing footer \"Visit Us\" block to display the cafe's address, phone number, and business hours (in addition to the existing location text), using the editable homepage content `contactInfo` values when available and falling back to the existing defaults when not.",
       "files": [
         "frontend/src/components/RoyalCafe/Footer.tsx"
       ],
@@ -36,7 +16,45 @@
         "authorization@4.0.0"
       ],
       "testIds": [
-        "REQ-39"
+        "REQ-43"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-admin-editor-contact-info-tab-allows-editing-and-saving-all-three-fields-address-phone-and-business-hours-without-overwriting-unrelated-contact-location-copy-and-persists-these-updates-via-the-existing-homepage-content-save-flow",
+      "featureTitle": "Ensure the admin Editor \"Contact Info\" tab allows editing and saving all three fields—address, phone, and business hours—without overwriting unrelated contact/location copy, and persists these updates via the existing homepage content save flow.",
+      "files": [
+        "frontend/src/components/RoyalCafe/admin/EditorPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-44"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-verify-that-the-public-contact-location-section-renders-address-phone-and-hours-from-backend-provided-homepagecontent-contactinfo-and-that-each-value-is-displayed-in-the-correct-dedicated-ui-area-address-card-contact-card-hours-card-without-any-field-overwriting-another",
+      "featureTitle": "Verify that the public Contact & Location section renders address, phone, and hours from backend-provided `HomePageContent.contactInfo` and that each value is displayed in the correct dedicated UI area (address card, contact card, hours card) without any field overwriting another.",
+      "files": [
+        "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-45"
       ],
       "confidence": "high"
     }

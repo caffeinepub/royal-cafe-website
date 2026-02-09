@@ -42,10 +42,12 @@ export interface _SERVICE {
   'getFullHomePageContent' : ActorMethod<[], HomePageContent>,
   'getHighlights' : ActorMethod<[], Array<Highlight>>,
   'getMenuCategories' : ActorMethod<[], Array<MenuCategory>>,
+  'getPublishState' : ActorMethod<[], boolean>,
   'getTestimonials' : ActorMethod<[], Array<Testimonial>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'setPublishState' : ActorMethod<[boolean], undefined>,
   'updateHomePageContent' : ActorMethod<[HomePageContent], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;

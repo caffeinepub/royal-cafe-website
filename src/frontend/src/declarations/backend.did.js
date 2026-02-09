@@ -46,6 +46,7 @@ export const idlService = IDL.Service({
   'getFullHomePageContent' : IDL.Func([], [HomePageContent], ['query']),
   'getHighlights' : IDL.Func([], [IDL.Vec(Highlight)], ['query']),
   'getMenuCategories' : IDL.Func([], [IDL.Vec(MenuCategory)], ['query']),
+  'getPublishState' : IDL.Func([], [IDL.Bool], ['query']),
   'getTestimonials' : IDL.Func([], [IDL.Vec(Testimonial)], ['query']),
   'getUserProfile' : IDL.Func(
       [IDL.Principal],
@@ -54,6 +55,7 @@ export const idlService = IDL.Service({
     ),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'setPublishState' : IDL.Func([IDL.Bool], [], []),
   'updateHomePageContent' : IDL.Func([HomePageContent], [], []),
 });
 
@@ -98,6 +100,7 @@ export const idlFactory = ({ IDL }) => {
     'getFullHomePageContent' : IDL.Func([], [HomePageContent], ['query']),
     'getHighlights' : IDL.Func([], [IDL.Vec(Highlight)], ['query']),
     'getMenuCategories' : IDL.Func([], [IDL.Vec(MenuCategory)], ['query']),
+    'getPublishState' : IDL.Func([], [IDL.Bool], ['query']),
     'getTestimonials' : IDL.Func([], [IDL.Vec(Testimonial)], ['query']),
     'getUserProfile' : IDL.Func(
         [IDL.Principal],
@@ -106,6 +109,7 @@ export const idlFactory = ({ IDL }) => {
       ),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'setPublishState' : IDL.Func([IDL.Bool], [], []),
     'updateHomePageContent' : IDL.Func([HomePageContent], [], []),
   });
 };

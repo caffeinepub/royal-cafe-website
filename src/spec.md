@@ -1,13 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Update the Contact & Location section to display the new phone/address formatting, and remove Instagram as an available social option across the site.
+**Goal:** Display and manage the cafe’s address, phone number, and business hours consistently across the public site footer and Contact & Location section.
 
 **Planned changes:**
-- Update the ContactLocationSection display values to show:
-  - Phone line exactly as: "Phone: +91 94508 14050"
-  - Address text exactly as: "Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh" (allowing line breaks without changing the text)
-- Ensure the Admin Editor "Contact Info" tab uses the updated phone/address as the default/fallback when no saved content exists.
-- Remove Instagram as an available social platform across the public UI (including the footer icon/link and any other Instagram social/contact rendering).
+- Update the public footer “Visit Us” block to show address, phone, and hours sourced from `HomePageContent.contactInfo` when available, with fallbacks to existing default values.
+- Update the admin Editor “Contact Info” tab to edit and save `contactInfo.address`, `contactInfo.phone`, and `contactInfo.hours` without overwriting other contact/location content.
+- Verify the public Contact & Location section renders address/phone/hours in their dedicated UI areas and supports multiline hours (split on newlines), with fallbacks when fields are missing.
 
-**User-visible outcome:** Visitors see the updated phone and address in the Contact & Location section, and no Instagram icon/link (or Instagram URL) appears anywhere on the site.
+**User-visible outcome:** Visitors can see the cafe’s full address, phone number, and business hours in the footer and Contact & Location section, and admins can edit these three fields in the editor and have them persist after saving and reloading.

@@ -128,10 +128,12 @@ export interface backendInterface {
     getFullHomePageContent(): Promise<HomePageContent>;
     getHighlights(): Promise<Array<Highlight>>;
     getMenuCategories(): Promise<Array<MenuCategory>>;
+    getPublishState(): Promise<boolean>;
     getTestimonials(): Promise<Array<Testimonial>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
+    setPublishState(publishState: boolean): Promise<void>;
     updateHomePageContent(newContent: HomePageContent): Promise<void>;
 }
 import type { ContactInfo as _ContactInfo, UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
@@ -249,6 +251,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async getPublishState(): Promise<boolean> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getPublishState();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getPublishState();
+            return result;
+        }
+    }
     async getTestimonials(): Promise<Array<Testimonial>> {
         if (this.processError) {
             try {
@@ -302,6 +318,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.saveCallerUserProfile(arg0);
+            return result;
+        }
+    }
+    async setPublishState(arg0: boolean): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.setPublishState(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.setPublishState(arg0);
             return result;
         }
     }

@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
 import type { HomePageContent } from '../backend';
-import { ADMIN_STATUS_QUERY_KEY, HOMEPAGE_CONTENT_QUERY_KEY } from './queryKeys';
+import { ADMIN_STATUS_QUERY_KEY, HOMEPAGE_CONTENT_QUERY_KEY, PUBLISH_STATE_QUERY_KEY } from './queryKeys';
 import { initializeAccessControl } from '../utils/accessControlInit';
 
 export function useGetFullHomePageContent() {
@@ -55,5 +55,43 @@ export function useIsCallerAdmin() {
     staleTime: 0,
     refetchOnMount: true,
     refetchOnWindowFocus: false,
+  });
+}
+
+export function useGetPublishState() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<boolean>({
+    queryKey: PUBLISH_STATE_QUERY_KEY,
+    queryFn: async () => {
+      if (!actor) return true; // Default to published if actor not available
+      try {
+        return await actor.getPublishState();
+      } catch (error) {
+        console.error('Error fetching publish state:', error);
+        return true; // Default to published on error
+      }
+    },
+    enabled: !!actor && !isFetching,
+    retry: 1,
+    staleTime: 0,
+    refetchOnMount: true,
+  });
+}
+
+export function useSetPublishState() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (publishState: boolean) => {
+      if (!actor) throw new Error('Actor not available');
+      // Ensure access control is initialized before admin operations
+      await initializeAccessControl(actor);
+      return actor.setPublishState(publishState);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: PUBLISH_STATE_QUERY_KEY });
+    },
   });
 }

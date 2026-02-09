@@ -45,9 +45,11 @@ export interface backendInterface {
     getFullHomePageContent(): Promise<HomePageContent>;
     getHighlights(): Promise<Array<Highlight>>;
     getMenuCategories(): Promise<Array<MenuCategory>>;
+    getPublishState(): Promise<boolean>;
     getTestimonials(): Promise<Array<Testimonial>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
+    setPublishState(publishState: boolean): Promise<void>;
     updateHomePageContent(newContent: HomePageContent): Promise<void>;
 }

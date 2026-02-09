@@ -9,8 +9,10 @@ import { NavBar } from './components/RoyalCafe/NavBar';
 import { Footer } from './components/RoyalCafe/Footer';
 import { EditorPage } from './components/RoyalCafe/admin/EditorPage';
 import { AccessDenied } from './components/RoyalCafe/admin/AccessDenied';
+import { MaintenanceScreen } from './components/RoyalCafe/MaintenanceScreen';
 import { useHomePageContent } from './hooks/useHomePageContent';
 import { useAdminAuth } from './hooks/useAdminAuth';
+import { useGetPublishState } from './hooks/useQueries';
 
 const queryClient = new QueryClient();
 
@@ -18,6 +20,7 @@ function AppContent() {
   const [viewMode, setViewMode] = useState<'public' | 'editor'>('public');
   const { content, isLoading: contentLoading } = useHomePageContent();
   const { isAdmin, isLoading: authLoading } = useAdminAuth();
+  const { data: isPublished, isLoading: publishStateLoading } = useGetPublishState();
 
   const handleEnterEditor = () => {
     setViewMode('editor');
@@ -49,6 +52,24 @@ function AppContent() {
     return <EditorPage onExit={handleExitEditor} />;
   }
 
+  // Show loading state while checking publish state
+  if (publishStateLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-royal-maroon mx-auto mb-4"></div>
+          <p className="text-foreground/60">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show maintenance screen if site is unpublished
+  if (isPublished === false) {
+    return <MaintenanceScreen onEnterEditor={handleEnterEditor} />;
+  }
+
+  // Show normal public homepage when published
   return (
     <div className="min-h-screen bg-background">
       <NavBar onEnterEditor={handleEnterEditor} />

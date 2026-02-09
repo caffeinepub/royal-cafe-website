@@ -1,54 +1,88 @@
 {
   "kind": "build_request",
-  "title": "Update contact address format and remove Instagram option",
+  "title": "Add phone, address, and business hours to visible site contact areas",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-38",
-      "text": "Update the Contact & Location content so the displayed values are:\n- Contact number: \"+91 94508 14050\"\n- Location/address: \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\"\nEnsure these values render in the existing ContactLocationSection without overwriting other copy, and ensure the phone number remains its own dedicated phone line.",
+      "id": "REQ-43",
+      "text": "Update the public-facing footer \"Visit Us\" block to display the cafe's address, phone number, and business hours (in addition to the existing location text), using the editable homepage content `contactInfo` values when available and falling back to the existing defaults when not.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "recent-messages-5"
         ],
         "quotes": [
-          "contact number - +91 94508 14050 / location - Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh"
+          "add phone and address and hours"
         ]
       },
       "acceptanceCriteria": [
-        "On the public site, the Contact card shows a line reading exactly: \"Phone: +91 94508 14050\".",
-        "On the public site, the Location card shows the address text exactly: \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\" (line breaks are allowed, but the text must match).",
-        "No other paragraphs/copy in the Contact & Location section are removed or replaced as a side effect of the update.",
-        "The Admin Editor \"Contact Info\" tab loads with the updated address/phone as the default/fallback when no saved content exists."
+        "Footer shows the full address from `content.contactInfo.address` (or the current default address) as readable text.",
+        "Footer shows the phone number from `content.contactInfo.phone` (or the current default phone) on its own dedicated line.",
+        "Footer shows business hours from `content.contactInfo.hours` (or the current default hours), rendered as multiple lines when the value contains newlines.",
+        "No existing footer links (Menu, Contact Us, Admin) are removed or broken."
       ]
     },
     {
-      "id": "REQ-39",
-      "text": "Remove the Instagram option from the site so Instagram is no longer shown as an available social platform (including removing the Instagram icon/link in the footer and any other social/contact UI that exposes Instagram).",
+      "id": "REQ-44",
+      "text": "Ensure the admin Editor \"Contact Info\" tab allows editing and saving all three fields—address, phone, and business hours—without overwriting unrelated contact/location copy, and persists these updates via the existing homepage content save flow.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "recent-messages-5"
         ],
         "quotes": [
-          "and removed instagram id option"
+          "add phone and address and hours"
         ]
       },
       "acceptanceCriteria": [
-        "The footer no longer displays an Instagram icon/link, and the Instagram URL https://www.instagram.com/royal_cafe_mau/ is no longer rendered in the UI.",
-        "There are no other Instagram social links/icons rendered anywhere on the public site."
+        "Editor provides inputs for: address (single-line or textarea), phone (single-line), and hours (textarea supporting newlines).",
+        "Saving from the editor updates `HomePageContent.contactInfo.address`, `.phone`, and `.hours` and the values remain after page reload.",
+        "Editing one field (e.g., phone) does not erase/replace the other fields (e.g., address/hours)."
+      ]
+    },
+    {
+      "id": "REQ-45",
+      "text": "Verify that the public Contact & Location section renders address, phone, and hours from backend-provided `HomePageContent.contactInfo` and that each value is displayed in the correct dedicated UI area (address card, contact card, hours card) without any field overwriting another.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "recent-messages-5"
+        ],
+        "quotes": [
+          "add phone and address and hours"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When `content.contactInfo.address` is present, it is displayed in the Location card and does not get replaced by phone/hours content.",
+        "When `content.contactInfo.phone` is present, it is displayed in the Contact card as a dedicated phone line.",
+        "When `content.contactInfo.hours` is present, it is split by newline and displayed as multiple lines in the Business Hours card.",
+        "If any of the three fields are missing, the section falls back to the existing default values without rendering errors."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/components/ui or any other paths listed in frontend.immutablePaths."
+    "Do not edit any files under `frontend/src/components/ui` (read-only UI components must be composed, not modified).",
+    "Do not modify files listed in `frontend.immutablePaths` (e.g., `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, Internet Identity hooks).",
+    "Backend must remain a single Motoko actor in `backend/main.mo`; only add `backend/migration.mo` changes if stable state shape must change."
   ],
   "nonGoals": [
-    "Do not change Google Maps embed/link behavior unless required to satisfy the new address text.",
-    "Do not change admin authentication, admin code behavior, or editor access control as part of this request."
+    "Changing the admin authentication flow or admin code.",
+    "Changing the publish/unpublish (maintenance mode) behavior.",
+    "Adding new social links or changing existing CTA buttons.",
+    "Redesigning unrelated sections (Hero/About/Menu/Reviews)."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

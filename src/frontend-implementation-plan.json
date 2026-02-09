@@ -1,42 +1,55 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Update Contact & Location defaults and remove Instagram from UI",
+  "title": "Show and edit address/phone/hours in footer and contact areas",
   "requirements": [
     {
-      "id": "REQ-38",
-      "summary": "Update Contact & Location displayed phone/address defaults in ContactLocationSection while preserving existing copy and admin fallback behavior.",
+      "id": "REQ-43",
+      "summary": "Render address, phone, and business hours in the public footer “Visit Us” block using editable homepage content contactInfo with sensible fallbacks.",
       "acceptanceCriteria": [
-        "On the public site, the Contact card shows a line reading exactly: \"Phone: +91 94508 14050\".",
-        "On the public site, the Location card shows the address text exactly: \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\" (line breaks are allowed, but the text must match).",
-        "No other paragraphs/copy in the Contact & Location section are removed or replaced as a side effect of the update.",
-        "The Admin Editor \"Contact Info\" tab loads with the updated address/phone as the default/fallback when no saved content exists."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/RoyalCafe/data/content.ts",
-          "operation": "modify",
-          "description": "Update the default/fallback contact info so defaultContent.contactInfo.phone is \"+91 94508 14050\" and defaultContent.contactInfo.address is exactly \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\" (no other default content should be changed)."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx",
-          "operation": "modify",
-          "description": "Ensure the Location card renders the exact fallback address string from the updated default content (rather than reconstructing from parts), while keeping all other section copy unchanged and keeping the phone number on its own dedicated \"Phone:\" line."
-        }
-      ]
-    },
-    {
-      "id": "REQ-39",
-      "summary": "Remove Instagram as an available social option across the public UI (footer and any other exposed social/contact UI).",
-      "acceptanceCriteria": [
-        "The footer no longer displays an Instagram icon/link, and the Instagram URL https://www.instagram.com/royal_cafe_mau/ is no longer rendered in the UI.",
-        "There are no other Instagram social links/icons rendered anywhere on the public site."
+        "Footer shows the full address from `content.contactInfo.address` (or the current default address) as readable text.",
+        "Footer shows the phone number from `content.contactInfo.phone` (or the current default phone) on its own dedicated line.",
+        "Footer shows business hours from `content.contactInfo.hours` (or the current default hours), rendered as multiple lines when the value contains newlines.",
+        "No existing footer links (Menu, Contact Us, Admin) are removed or broken."
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/RoyalCafe/Footer.tsx",
           "operation": "modify",
-          "description": "Remove the Instagram icon/link and any related imports/markup so the Instagram URL is not rendered in the footer."
+          "description": "Update the “Visit Us” block to read `contactInfo` from the existing homepage content (via `useHomePageContent`) and render address/phone/hours with fallbacks (preserving the existing footer location copy as the footer default address). Render hours as multiple lines by splitting on newlines. Keep existing footer links unchanged. Use existing shadcn-ui composed components only where already in use patterns; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-44",
+      "summary": "Ensure the admin Editor “Contact Info” tab edits and saves address, phone, and hours via the existing homepage content save flow without overwriting other contact fields.",
+      "acceptanceCriteria": [
+        "Editor provides inputs for: address (single-line or textarea), phone (single-line), and hours (textarea supporting newlines).",
+        "Saving from the editor updates `HomePageContent.contactInfo.address`, `.phone`, and `.hours` and the values remain after page reload.",
+        "Editing one field (e.g., phone) does not erase/replace the other fields (e.g., address/hours)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/RoyalCafe/admin/EditorPage.tsx",
+          "operation": "modify",
+          "description": "In the existing “Contact Info” tab, bind three inputs to `editedContent.contactInfo.address`, `.phone`, and `.hours` (hours as a textarea that preserves newlines). Update state using a merge/spread pattern for `contactInfo` so updating one field does not overwrite the others, and rely on the existing `saveContent(editedContent)` flow to persist. Use existing shadcn-ui `Input`, `Textarea`, and `Label` components already imported; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-45",
+      "summary": "Confirm the public Contact & Location section uses backend-provided contactInfo fields in the correct cards with newline-aware hours and robust defaults.",
+      "acceptanceCriteria": [
+        "When `content.contactInfo.address` is present, it is displayed in the Location card and does not get replaced by phone/hours content.",
+        "When `content.contactInfo.phone` is present, it is displayed in the Contact card as a dedicated phone line.",
+        "When `content.contactInfo.hours` is present, it is split by newline and displayed as multiple lines in the Business Hours card.",
+        "If any of the three fields are missing, the section falls back to the existing default values without rendering errors."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx",
+          "operation": "modify",
+          "description": "Harden the section’s value selection so each card reads only its dedicated `contactInfo` field and falls back to existing defaults when a field is missing/empty. Ensure business hours are derived from a single string (content or default) and split by newline into multiple lines for display. Keep use of read-only shadcn-ui components (e.g., `Button`, `Skeleton`) compositional-only; verify the component's usage instructions before implementing."
         }
       ]
     }

@@ -2,6 +2,7 @@ import { Heart, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { AdminLoginDialog } from './admin/AdminLoginDialog';
 import { useAdminAuth } from '../../hooks/useAdminAuth';
+import { useHomePageContent } from '../../hooks/useHomePageContent';
 
 interface FooterProps {
   onEnterEditor?: () => void;
@@ -10,6 +11,7 @@ interface FooterProps {
 export function Footer({ onEnterEditor }: FooterProps) {
   const [showAdminDialog, setShowAdminDialog] = useState(false);
   const { isAdmin, isLoading: adminLoading } = useAdminAuth();
+  const { content } = useHomePageContent();
 
   const handleAdminClick = () => {
     if (isAdmin && onEnterEditor) {
@@ -25,6 +27,12 @@ export function Footer({ onEnterEditor }: FooterProps) {
       onEnterEditor();
     }
   };
+
+  // Get contact info with fallbacks
+  const address = content?.contactInfo?.address || 'Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh';
+  const phone = content?.contactInfo?.phone || '+91 94508 14050';
+  const hours = content?.contactInfo?.hours || 'Monday - Sunday\n10:00 am to 10:00 pm\nOpen all days';
+  const hoursLines = hours.split('\n');
 
   return (
     <>
@@ -67,22 +75,31 @@ export function Footer({ onEnterEditor }: FooterProps) {
               </ul>
             </div>
 
-            {/* Contact */}
+            {/* Visit Us */}
             <div>
               <h3 className="font-display text-xl font-bold mb-4 text-royal-gold">Visit Us</h3>
-              <p className="text-royal-cream/80 text-sm leading-relaxed">
-                Varpur, Mau<br />
-                Uttar Pradesh
-              </p>
+              <div className="space-y-3 text-sm">
+                <p className="text-royal-cream/80 leading-relaxed">
+                  {address}
+                </p>
+                <p className="text-royal-cream/80">
+                  {phone}
+                </p>
+                <div className="text-royal-cream/80">
+                  {hoursLines.map((line, index) => (
+                    <p key={index}>{line}</p>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Bottom Bar */}
           <div className="border-t border-royal-cream/20 pt-8 text-center">
             <p className="text-royal-cream/60 text-sm flex items-center justify-center gap-2 flex-wrap">
-              © 2026. Built with <Heart className="h-4 w-4 text-royal-gold fill-royal-gold" /> using{' '}
+              © {new Date().getFullYear()}. Built with <Heart className="h-4 w-4 text-royal-gold fill-royal-gold" /> using{' '}
               <a
-                href="https://caffeine.ai"
+                href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-royal-gold hover:underline"

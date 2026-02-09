@@ -19,3 +19,8 @@ export const ADMIN_STATUS_QUERY_KEY = ['isAdmin'];
  * Query key for homepage content
  */
 export const HOMEPAGE_CONTENT_QUERY_KEY = ['homePageContent'];
+
+/**
+ * Query key for publish state
+ */
+export const PUBLISH_STATE_QUERY_KEY = ['publishState'];

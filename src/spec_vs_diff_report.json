@@ -1,51 +1,32 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-09T10:09:39.496Z",
-  "summary": "Diff updates the ContactLocationSection address fallback text and modifies the Footer (notably removing the Instagram social link per file summary). The default content data file is modified but truncated, so phone/address defaults and admin editor fallback cannot be fully verified from provided evidence.",
+  "generatedAt": "2026-02-09T17:23:31.499Z",
+  "summary": "REQ-43 appears implemented in Footer.tsx by rendering address/phone/hours from content.contactInfo with defaults and splitting hours by newline while retaining existing footer links. REQ-45 appears partially implemented in ContactLocationSection.tsx by reading contactInfo fields with fallbacks and splitting hours by newline, but the diff is truncated before showing the actual rendering for hours and contact/phone card. REQ-44 (admin editor Contact Info tab edits/saves all three fields without overwriting others) cannot be verified from the truncated EditorPage.tsx diff; the shown portion does not include any contactInfo editing UI or update logic.",
   "missing_requirements": [
     {
-      "id": "REQ-38",
-      "requirement": "Public site Contact card shows a line reading exactly: \"Phone: +91 94508 14050\" and phone remains its own dedicated phone line.",
-      "reason": "The provided ContactLocationSection diff is truncated and does not include the phone rendering portion, so the exact displayed phone line text and formatting cannot be confirmed from the evidence.",
+      "id": "REQ-44",
+      "requirement": "Ensure the admin Editor \"Contact Info\" tab allows editing and saving address, phone, and business hours (supporting newlines) via the existing save flow, without overwriting other fields.",
+      "reason": "EditorPage.tsx is truncated and the visible portion does not show any Contact Info tab inputs for address/phone/hours, nor any specific update logic ensuring edits do not overwrite sibling fields.",
+      "evidence": [
+        "frontend/src/components/RoyalCafe/admin/EditorPage.tsx (truncated)"
+      ]
+    },
+    {
+      "id": "REQ-45",
+      "requirement": "Public Contact & Location section displays address/phone/hours each in the correct dedicated UI area (location/contact/hours cards) and splits hours by newline with fallbacks.",
+      "reason": "Although the section computes address/phone/hours with fallbacks and splits hours by newline, the diff is truncated before confirming that phone is rendered in a dedicated Contact card/line and that hours lines are actually rendered in the Business Hours card (and not overwritten by other fields).",
       "evidence": [
         "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx (truncated)"
       ]
-    },
-    {
-      "id": "REQ-38",
-      "requirement": "Admin Editor \"Contact Info\" tab loads with the updated address/phone as the default/fallback when no saved content exists.",
-      "reason": "The default content file where fallback contact info likely lives is truncated at the contactInfo object, so the updated default phone/address values and their use by the editor cannot be verified from the provided diff.",
-      "evidence": [
-        "frontend/src/components/RoyalCafe/data/content.ts (truncated)",
-        "frontend-file-summaries.txt (mentions updated defaults but not verifiable from code shown)"
-      ]
-    },
-    {
-      "id": "REQ-39",
-      "requirement": "Instagram is no longer shown as an available social platform anywhere on the public site (no icons/links rendered anywhere).",
-      "reason": "Footer changes indicate Instagram removal there, but the diff evidence does not show a project-wide removal (only Footer is shown). Without seeing other components that may render social links, the \"nowhere on the public site\" condition cannot be confirmed.",
-      "evidence": [
-        "frontend/src/components/RoyalCafe/Footer.tsx",
-        "frontend-file-summaries.txt (Footer summary mentions Instagram removed, but no evidence for other locations)"
-      ]
     }
   ],
-  "hallucinated_features": [
-    {
-      "description": "Added/modified admin access behavior in the Footer (Admin quick link and admin login dialog integration).",
-      "reason": "The BuildRequest explicitly lists Instagram removal and contact/address updates as goals, and lists admin/auth/editor access control changes as non-goals; the Footer diff includes admin login dialog wiring and admin button behavior changes.",
-      "evidence": [
-        "frontend/src/components/RoyalCafe/Footer.tsx",
-        "frontend-file-summaries.txt (Footer/App/NavBar/AdminLoginDialog summaries referencing admin auth/editor behavior)"
-      ]
-    }
-  ],
-  "confidence": 0.62,
+  "hallucinated_features": [],
+  "confidence": 0.66,
   "changed_files": [
     "frontend-file-summaries.txt",
     "frontend/src/components/RoyalCafe/Footer.tsx",
-    "frontend/src/components/RoyalCafe/data/content.ts",
+    "frontend/src/components/RoyalCafe/admin/EditorPage.tsx",
     "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx",
     "project_state.json"
   ]

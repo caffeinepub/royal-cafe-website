@@ -10,8 +10,11 @@ interface ContactLocationSectionProps {
 }
 
 export function ContactLocationSection({ content, isLoading }: ContactLocationSectionProps) {
-  const contactInfo = content?.contactInfo;
-  const hours = contactInfo?.hours.split('\n') || defaultContactInfo.hours;
+  // Get values with proper fallbacks
+  const address = content?.contactInfo?.address || 'Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh';
+  const phone = content?.contactInfo?.phone || defaultContactInfo.phone;
+  const hoursString = content?.contactInfo?.hours || defaultContactInfo.hours.join('\n');
+  const hours = hoursString.split('\n').filter(line => line.trim());
 
   return (
     <section id="contact" className="py-20 md:py-28 bg-background">
@@ -48,7 +51,7 @@ export function ContactLocationSection({ content, isLoading }: ContactLocationSe
                       </div>
                     ) : (
                       <p className="text-foreground/80 leading-relaxed">
-                        {contactInfo?.address || 'Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh'}
+                        {address}
                       </p>
                     )}
                     <Button
@@ -112,7 +115,7 @@ export function ContactLocationSection({ content, isLoading }: ContactLocationSe
                     ) : (
                       <>
                         <p className="text-foreground/80">
-                          Phone: {contactInfo?.phone || defaultContactInfo.phone}
+                          Phone: {phone}
                         </p>
                         <p className="text-foreground/80 flex items-center gap-2 mt-1">
                           <Mail className="h-4 w-4" />

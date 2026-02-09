@@ -1,48 +1,58 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-09T10:09:39.498Z",
+  "generatedAt": "2026-02-09T17:23:31.503Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
-    "implemented": 2,
+    "total": 3,
+    "implemented": 3,
     "items": [
       {
-        "id": "REQ-38",
-        "summary": "Update the Contact & Location content so the displayed values are:\n- Contact number: \"+91 94508 14050\"\n- Location/address: \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\"\nEnsure these values render in the existing ContactLocationSection without overwriting other copy, and ensure the phone number remains its own dedicated phone line.",
+        "id": "REQ-43",
+        "summary": "Update the public-facing footer \"Visit Us\" block to display the cafe's address, phone number, and business hours (in addition to the existing location text), using the editable homepage content `contactInfo` values when available and falling back to the existing defaults when not.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/RoyalCafe/data/content.ts",
-          "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx"
+          "frontend/src/components/RoyalCafe/Footer.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/RoyalCafe/data/content.ts",
-          "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx"
+          "frontend/src/components/RoyalCafe/Footer.tsx"
         ]
       },
       {
-        "id": "REQ-39",
-        "summary": "Remove the Instagram option from the site so Instagram is no longer shown as an available social platform (including removing the Instagram icon/link in the footer and any other social/contact UI that exposes Instagram).",
+        "id": "REQ-44",
+        "summary": "Ensure the admin Editor \"Contact Info\" tab allows editing and saving all three fields—address, phone, and business hours—without overwriting unrelated contact/location copy, and persists these updates via the existing homepage content save flow.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/RoyalCafe/Footer.tsx"
+          "frontend/src/components/RoyalCafe/admin/EditorPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/RoyalCafe/Footer.tsx"
+          "frontend/src/components/RoyalCafe/admin/EditorPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-45",
+        "summary": "Verify that the public Contact & Location section renders address, phone, and hours from backend-provided `HomePageContent.contactInfo` and that each value is displayed in the correct dedicated UI area (address card, contact card, hours card) without any field overwriting another.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
     "build-request.json",
+    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
     "frontend/src/components/RoyalCafe/Footer.tsx",
-    "frontend/src/components/RoyalCafe/data/content.ts",
+    "frontend/src/components/RoyalCafe/admin/EditorPage.tsx",
     "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx",
     "project_state.json",
     "scratch/component-selection.json",
