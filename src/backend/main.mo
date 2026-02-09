@@ -1,11 +1,14 @@
 import Map "mo:core/Map";
 import Nat "mo:core/Nat";
-import Iter "mo:core/Iter";
 import Text "mo:core/Text";
+import Iter "mo:core/Iter";
 import Principal "mo:core/Principal";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 import Runtime "mo:core/Runtime";
+
+
+// specify the data migration function in with-clause
 
 actor {
   // Authorization
@@ -97,27 +100,25 @@ actor {
 
   // Admin endpoint to update content
   public shared ({ caller }) func updateHomePageContent(newContent : HomePageContent) : async () {
-    assertAdmin(caller);
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admin can perform this action");
+    };
 
-    // Clear and repopulate menu categories
     menuCategories.clear();
     for (category in newContent.menuCategories.values()) {
       menuCategories.add(category.name, category);
     };
 
-    // Clear and repopulate highlights
     highlights.clear();
     for (i in Nat.range(0, newContent.highlights.size())) {
       highlights.add(i, newContent.highlights[i]);
     };
 
-    // Clear and repopulate testimonials
     testimonials.clear();
     for (i in Nat.range(0, newContent.testimonials.size())) {
       testimonials.add(i, newContent.testimonials[i]);
     };
 
-    // Update contact info
     contactInfo := ?newContent.contactInfo;
   };
 

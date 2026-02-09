@@ -1,66 +1,49 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-09T09:21:56.860Z",
+  "generatedAt": "2026-02-09T10:09:39.498Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
+    "total": 2,
     "implemented": 2,
     "items": [
       {
-        "id": "REQ-22",
-        "summary": "Fix the admin authentication flow so that entering the correct admin code \"275101MAU\" actually authorizes the current caller and allows access to the admin-only editor page (no AccessDenied screen after successful login).",
+        "id": "REQ-38",
+        "summary": "Update the Contact & Location content so the displayed values are:\n- Contact number: \"+91 94508 14050\"\n- Location/address: \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\"\nEnsure these values render in the existing ContactLocationSection without overwriting other copy, and ensure the phone number remains its own dedicated phone line.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx",
-          "frontend/src/hooks/useActor.ts",
-          "frontend/src/App.tsx"
+          "frontend/src/components/RoyalCafe/data/content.ts",
+          "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx",
-          "frontend/src/App.tsx"
+          "frontend/src/components/RoyalCafe/data/content.ts",
+          "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx"
         ]
       },
       {
-        "id": "REQ-23",
-        "summary": "Backend: expose an admin-status API used by the frontend and ensure it behaves consistently with content update authorization (i.e., the same rule that allows updateHomePageContent must also make isCallerAdmin return true).",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-24",
-        "summary": "Frontend: update AdminLoginDialog to perform admin login against the backend (instead of only local string-checking) and to refresh the cached admin status query after a successful login so NavBar/App editor gating works reliably.",
+        "id": "REQ-39",
+        "summary": "Remove the Instagram option from the site so Instagram is no longer shown as an available social platform (including removing the Instagram icon/link in the footer and any other social/contact UI that exposes Instagram).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx",
-          "frontend/src/components/RoyalCafe/NavBar.tsx",
-          "frontend/src/components/RoyalCafe/Footer.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/components/RoyalCafe/Footer.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx",
-          "frontend/src/components/RoyalCafe/NavBar.tsx",
-          "frontend/src/components/RoyalCafe/Footer.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/components/RoyalCafe/Footer.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
     "frontend/src/components/RoyalCafe/Footer.tsx",
-    "frontend/src/components/RoyalCafe/NavBar.tsx",
-    "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx",
-    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/components/RoyalCafe/data/content.ts",
+    "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

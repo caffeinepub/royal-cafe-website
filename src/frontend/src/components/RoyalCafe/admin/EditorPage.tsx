@@ -15,13 +15,6 @@ interface EditorPageProps {
   onExit: () => void;
 }
 
-interface ParsedHighlight {
-  name: string;
-  description: string;
-  price: string;
-  badge?: string;
-}
-
 interface ParsedTestimonial {
   name: string;
   location: string;
@@ -38,20 +31,6 @@ export function EditorPage({ onExit }: EditorPageProps) {
       setEditedContent(content);
     }
   }, [content, editedContent]);
-
-  const parseHighlight = (str: string): ParsedHighlight => {
-    const parts = str.split('|');
-    return {
-      name: parts[0] || '',
-      description: parts[1] || '',
-      price: parts[2] || '',
-      badge: parts[3] || undefined
-    };
-  };
-
-  const serializeHighlight = (h: ParsedHighlight): string => {
-    return `${h.name}|${h.description}|${h.price}${h.badge ? `|${h.badge}` : ''}`;
-  };
 
   const parseTestimonial = (str: string): ParsedTestimonial => {
     const parts = str.split('|');
@@ -89,7 +68,6 @@ export function EditorPage({ onExit }: EditorPageProps) {
     );
   }
 
-  const highlights = editedContent.highlights.map(parseHighlight);
   const testimonials = editedContent.testimonials.map(parseTestimonial);
 
   return (
@@ -139,153 +117,41 @@ export function EditorPage({ onExit }: EditorPageProps) {
           <Alert className="mb-6 bg-green-50 border-green-200">
             <CheckCircle className="h-4 w-4 text-green-600" />
             <AlertDescription className="text-green-800">
-              Changes saved successfully! The public site will reflect these updates.
+              Changes saved successfully!
             </AlertDescription>
           </Alert>
         )}
 
         {saveError && (
-          <Alert variant="destructive" className="mb-6">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
+          <Alert className="mb-6 bg-red-50 border-red-200">
+            <AlertCircle className="h-4 w-4 text-red-600" />
+            <AlertDescription className="text-red-800">
               Failed to save changes. Please try again.
             </AlertDescription>
           </Alert>
         )}
 
-        <Tabs defaultValue="highlights" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white">
-            <TabsTrigger value="highlights">Highlights</TabsTrigger>
+        <Tabs defaultValue="menu" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="menu">Menu</TabsTrigger>
             <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
-            <TabsTrigger value="contact">Contact</TabsTrigger>
+            <TabsTrigger value="contact">Contact Info</TabsTrigger>
           </TabsList>
 
-          {/* Highlights Tab */}
-          <TabsContent value="highlights" className="space-y-4">
+          {/* Menu Tab */}
+          <TabsContent value="menu" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="font-display text-royal-maroon">Popular Picks</CardTitle>
-                <CardDescription>Edit the featured items displayed on the homepage</CardDescription>
+                <CardTitle>Menu Categories</CardTitle>
+                <CardDescription>
+                  Manage your menu categories and items
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                {highlights.map((highlight, index) => (
-                  <div key={index} className="space-y-3 p-4 bg-royal-cream/30 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <Label className="text-sm font-semibold">Item {index + 1}</Label>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          const newHighlights = highlights.filter((_, i) => i !== index);
-                          setEditedContent({
-                            ...editedContent,
-                            highlights: newHighlights.map(serializeHighlight)
-                          });
-                        }}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <div>
-                        <Label htmlFor={`highlight-name-${index}`}>Name</Label>
-                        <Input
-                          id={`highlight-name-${index}`}
-                          value={highlight.name}
-                          onChange={(e) => {
-                            const newHighlights = [...highlights];
-                            newHighlights[index].name = e.target.value;
-                            setEditedContent({
-                              ...editedContent,
-                              highlights: newHighlights.map(serializeHighlight)
-                            });
-                          }}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor={`highlight-price-${index}`}>Price (₹)</Label>
-                        <Input
-                          id={`highlight-price-${index}`}
-                          value={highlight.price}
-                          onChange={(e) => {
-                            const newHighlights = [...highlights];
-                            newHighlights[index].price = e.target.value;
-                            setEditedContent({
-                              ...editedContent,
-                              highlights: newHighlights.map(serializeHighlight)
-                            });
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <Label htmlFor={`highlight-desc-${index}`}>Description</Label>
-                      <Textarea
-                        id={`highlight-desc-${index}`}
-                        value={highlight.description}
-                        onChange={(e) => {
-                          const newHighlights = [...highlights];
-                          newHighlights[index].description = e.target.value;
-                          setEditedContent({
-                            ...editedContent,
-                            highlights: newHighlights.map(serializeHighlight)
-                          });
-                        }}
-                        rows={2}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor={`highlight-badge-${index}`}>Badge (optional)</Label>
+                {editedContent.menuCategories.map((category, catIndex) => (
+                  <div key={catIndex} className="border rounded-lg p-4 space-y-4">
+                    <div className="flex items-center justify-between">
                       <Input
-                        id={`highlight-badge-${index}`}
-                        value={highlight.badge || ''}
-                        onChange={(e) => {
-                          const newHighlights = [...highlights];
-                          newHighlights[index].badge = e.target.value || undefined;
-                          setEditedContent({
-                            ...editedContent,
-                            highlights: newHighlights.map(serializeHighlight)
-                          });
-                        }}
-                        placeholder="e.g., Popular, Bestseller"
-                      />
-                    </div>
-                  </div>
-                ))}
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    const newHighlight: ParsedHighlight = {
-                      name: 'New Item',
-                      description: 'Description',
-                      price: '0'
-                    };
-                    setEditedContent({
-                      ...editedContent,
-                      highlights: [...highlights, newHighlight].map(serializeHighlight)
-                    });
-                  }}
-                  className="w-full"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Highlight
-                </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Menu Tab */}
-          <TabsContent value="menu" className="space-y-4">
-            {editedContent.menuCategories.map((category, catIndex) => (
-              <Card key={catIndex}>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <Label htmlFor={`category-name-${catIndex}`}>Category Name</Label>
-                      <Input
-                        id={`category-name-${catIndex}`}
                         value={category.name}
                         onChange={(e) => {
                           const newCategories = [...editedContent.menuCategories];
@@ -295,51 +161,33 @@ export function EditorPage({ onExit }: EditorPageProps) {
                             menuCategories: newCategories
                           });
                         }}
-                        className="font-display text-lg font-semibold"
+                        className="font-semibold text-lg max-w-md"
+                        placeholder="Category name"
                       />
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => {
+                          const newCategories = editedContent.menuCategories.filter(
+                            (_, i) => i !== catIndex
+                          );
+                          setEditedContent({
+                            ...editedContent,
+                            menuCategories: newCategories
+                          });
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        const newCategories = editedContent.menuCategories.filter((_, i) => i !== catIndex);
-                        setEditedContent({
-                          ...editedContent,
-                          menuCategories: newCategories
-                        });
-                      }}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 ml-4"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {category.items.map((item, itemIndex) => (
-                    <div key={itemIndex} className="space-y-2 p-3 bg-royal-cream/20 rounded">
-                      <div className="flex items-center justify-between mb-2">
-                        <Label className="text-sm font-semibold">Item {itemIndex + 1}</Label>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => {
-                            const newCategories = [...editedContent.menuCategories];
-                            newCategories[catIndex].items = category.items.filter((_, i) => i !== itemIndex);
-                            setEditedContent({
-                              ...editedContent,
-                              menuCategories: newCategories
-                            });
-                          }}
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+
+                    <div className="space-y-3 pl-4">
+                      {category.items.map((item, itemIndex) => (
+                        <div
+                          key={itemIndex}
+                          className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start bg-royal-cream/20 p-3 rounded"
                         >
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <div>
-                          <Label htmlFor={`item-name-${catIndex}-${itemIndex}`}>Name</Label>
                           <Input
-                            id={`item-name-${catIndex}-${itemIndex}`}
                             value={item.name}
                             onChange={(e) => {
                               const newCategories = [...editedContent.menuCategories];
@@ -349,12 +197,23 @@ export function EditorPage({ onExit }: EditorPageProps) {
                                 menuCategories: newCategories
                               });
                             }}
+                            placeholder="Item name"
+                            className="md:col-span-3"
                           />
-                        </div>
-                        <div>
-                          <Label htmlFor={`item-price-${catIndex}-${itemIndex}`}>Price (₹)</Label>
                           <Input
-                            id={`item-price-${catIndex}-${itemIndex}`}
+                            value={item.description}
+                            onChange={(e) => {
+                              const newCategories = [...editedContent.menuCategories];
+                              newCategories[catIndex].items[itemIndex].description = e.target.value;
+                              setEditedContent({
+                                ...editedContent,
+                                menuCategories: newCategories
+                              });
+                            }}
+                            placeholder="Description"
+                            className="md:col-span-6"
+                          />
+                          <Input
                             value={item.price}
                             onChange={(e) => {
                               const newCategories = [...editedContent.menuCategories];
@@ -364,80 +223,86 @@ export function EditorPage({ onExit }: EditorPageProps) {
                                 menuCategories: newCategories
                               });
                             }}
+                            placeholder="Price"
+                            className="md:col-span-2"
                           />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              const newCategories = [...editedContent.menuCategories];
+                              newCategories[catIndex].items = newCategories[catIndex].items.filter(
+                                (_, i) => i !== itemIndex
+                              );
+                              setEditedContent({
+                                ...editedContent,
+                                menuCategories: newCategories
+                              });
+                            }}
+                            className="md:col-span-1"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
-                      </div>
-                      <div>
-                        <Label htmlFor={`item-desc-${catIndex}-${itemIndex}`}>Description</Label>
-                        <Input
-                          id={`item-desc-${catIndex}-${itemIndex}`}
-                          value={item.description}
-                          onChange={(e) => {
-                            const newCategories = [...editedContent.menuCategories];
-                            newCategories[catIndex].items[itemIndex].description = e.target.value;
-                            setEditedContent({
-                              ...editedContent,
-                              menuCategories: newCategories
-                            });
-                          }}
-                        />
-                      </div>
+                      ))}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          const newCategories = [...editedContent.menuCategories];
+                          newCategories[catIndex].items.push({
+                            name: '',
+                            description: '',
+                            price: ''
+                          });
+                          setEditedContent({
+                            ...editedContent,
+                            menuCategories: newCategories
+                          });
+                        }}
+                        className="w-full"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Item
+                      </Button>
                     </div>
-                  ))}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      const newCategories = [...editedContent.menuCategories];
-                      newCategories[catIndex].items.push({
-                        name: 'New Item',
-                        description: 'Description',
-                        price: '0'
-                      });
-                      setEditedContent({
-                        ...editedContent,
-                        menuCategories: newCategories
-                      });
-                    }}
-                    className="w-full"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Item
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-            <Button
-              variant="outline"
-              onClick={() => {
-                const newCategory: MenuCategory = {
-                  name: 'New Category',
-                  items: []
-                };
-                setEditedContent({
-                  ...editedContent,
-                  menuCategories: [...editedContent.menuCategories, newCategory]
-                });
-              }}
-              className="w-full"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Category
-            </Button>
+                  </div>
+                ))}
+
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setEditedContent({
+                      ...editedContent,
+                      menuCategories: [
+                        ...editedContent.menuCategories,
+                        { name: 'New Category', items: [] }
+                      ]
+                    });
+                  }}
+                  className="w-full"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Category
+                </Button>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Testimonials Tab */}
-          <TabsContent value="testimonials" className="space-y-4">
+          <TabsContent value="testimonials" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="font-display text-royal-maroon">Customer Reviews</CardTitle>
-                <CardDescription>Edit customer testimonials</CardDescription>
+                <CardTitle>Customer Testimonials</CardTitle>
+                <CardDescription>
+                  Manage customer reviews and feedback
+                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-4">
                 {testimonials.map((testimonial, index) => (
-                  <div key={index} className="space-y-3 p-4 bg-royal-cream/30 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <Label className="text-sm font-semibold">Review {index + 1}</Label>
+                  <div key={index} className="border rounded-lg p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-semibold">Testimonial {index + 1}</h4>
                       <Button
                         variant="ghost"
                         size="sm"
@@ -448,16 +313,14 @@ export function EditorPage({ onExit }: EditorPageProps) {
                             testimonials: newTestimonials.map(serializeTestimonial)
                           });
                         }}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
-                        <Label htmlFor={`testimonial-name-${index}`}>Customer Name</Label>
+                        <Label>Name</Label>
                         <Input
-                          id={`testimonial-name-${index}`}
                           value={testimonial.name}
                           onChange={(e) => {
                             const newTestimonials = [...testimonials];
@@ -467,12 +330,12 @@ export function EditorPage({ onExit }: EditorPageProps) {
                               testimonials: newTestimonials.map(serializeTestimonial)
                             });
                           }}
+                          placeholder="Customer name"
                         />
                       </div>
                       <div>
-                        <Label htmlFor={`testimonial-location-${index}`}>Location</Label>
+                        <Label>Location</Label>
                         <Input
-                          id={`testimonial-location-${index}`}
                           value={testimonial.location}
                           onChange={(e) => {
                             const newTestimonials = [...testimonials];
@@ -482,13 +345,13 @@ export function EditorPage({ onExit }: EditorPageProps) {
                               testimonials: newTestimonials.map(serializeTestimonial)
                             });
                           }}
+                          placeholder="Location"
                         />
                       </div>
                     </div>
                     <div>
-                      <Label htmlFor={`testimonial-quote-${index}`}>Review</Label>
+                      <Label>Quote</Label>
                       <Textarea
-                        id={`testimonial-quote-${index}`}
                         value={testimonial.quote}
                         onChange={(e) => {
                           const newTestimonials = [...testimonials];
@@ -498,22 +361,23 @@ export function EditorPage({ onExit }: EditorPageProps) {
                             testimonials: newTestimonials.map(serializeTestimonial)
                           });
                         }}
+                        placeholder="Customer testimonial"
                         rows={3}
                       />
                     </div>
                   </div>
                 ))}
+
                 <Button
                   variant="outline"
                   onClick={() => {
-                    const newTestimonial: ParsedTestimonial = {
-                      name: 'Customer Name',
-                      location: 'Location',
-                      quote: 'Review text here'
-                    };
+                    const newTestimonials = [
+                      ...testimonials,
+                      { name: '', location: '', quote: '' }
+                    ];
                     setEditedContent({
                       ...editedContent,
-                      testimonials: [...testimonials, newTestimonial].map(serializeTestimonial)
+                      testimonials: newTestimonials.map(serializeTestimonial)
                     });
                   }}
                   className="w-full"
@@ -525,18 +389,19 @@ export function EditorPage({ onExit }: EditorPageProps) {
             </Card>
           </TabsContent>
 
-          {/* Contact Tab */}
-          <TabsContent value="contact" className="space-y-4">
+          {/* Contact Info Tab */}
+          <TabsContent value="contact" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="font-display text-royal-maroon">Contact Information</CardTitle>
-                <CardDescription>Edit address, phone, and hours</CardDescription>
+                <CardTitle>Contact Information</CardTitle>
+                <CardDescription>
+                  Update your cafe's contact details
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="contact-address">Address</Label>
-                  <Input
-                    id="contact-address"
+                  <Label>Address</Label>
+                  <Textarea
                     value={editedContent.contactInfo.address}
                     onChange={(e) => {
                       setEditedContent({
@@ -547,13 +412,14 @@ export function EditorPage({ onExit }: EditorPageProps) {
                         }
                       });
                     }}
-                    placeholder="Street, City, State, Country"
+                    placeholder="Full address"
+                    rows={3}
                   />
                 </div>
+
                 <div>
-                  <Label htmlFor="contact-phone">Phone</Label>
+                  <Label>Phone</Label>
                   <Input
-                    id="contact-phone"
                     value={editedContent.contactInfo.phone}
                     onChange={(e) => {
                       setEditedContent({
@@ -564,13 +430,13 @@ export function EditorPage({ onExit }: EditorPageProps) {
                         }
                       });
                     }}
-                    placeholder="+91 XXXXX XXXXX"
+                    placeholder="Phone number"
                   />
                 </div>
+
                 <div>
-                  <Label htmlFor="contact-hours">Business Hours</Label>
+                  <Label>Business Hours</Label>
                   <Textarea
-                    id="contact-hours"
                     value={editedContent.contactInfo.hours}
                     onChange={(e) => {
                       setEditedContent({
@@ -581,11 +447,11 @@ export function EditorPage({ onExit }: EditorPageProps) {
                         }
                       });
                     }}
+                    placeholder="Business hours (one line per entry)"
                     rows={4}
-                    placeholder="Monday - Sunday&#10;7:00 AM - 10:00 PM&#10;Open all days"
                   />
-                  <p className="text-sm text-foreground/60 mt-1">
-                    Each line will be displayed separately
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Enter each line separately (e.g., "Monday - Sunday" on one line, "10:00 am to 10:00 pm" on the next)
                   </p>
                 </div>
               </CardContent>

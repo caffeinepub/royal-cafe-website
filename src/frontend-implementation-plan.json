@@ -1,62 +1,42 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix admin login flow to grant editor access after correct code",
+  "title": "Update Contact & Location defaults and remove Instagram from UI",
   "requirements": [
     {
-      "id": "REQ-22",
-      "summary": "Ensure correct admin code results in backend-confirmed admin state and immediate access to the admin editor (no AccessDenied after successful login).",
+      "id": "REQ-38",
+      "summary": "Update Contact & Location displayed phone/address defaults in ContactLocationSection while preserving existing copy and admin fallback behavior.",
       "acceptanceCriteria": [
-        "From the NavBar or Footer Admin entry, entering exactly \"275101MAU\" results in the EditorPage being shown (not AccessDenied).",
-        "The authorization decision is not purely client-side; the backend must be able to confirm whether the current caller is an admin.",
-        "After successful login, the frontend admin check state updates without requiring a hard reload (i.e., the UI transitions into editor mode immediately)."
+        "On the public site, the Contact card shows a line reading exactly: \"Phone: +91 94508 14050\".",
+        "On the public site, the Location card shows the address text exactly: \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\" (line breaks are allowed, but the text must match).",
+        "No other paragraphs/copy in the Contact & Location section are removed or replaced as a side effect of the update.",
+        "The Admin Editor \"Contact Info\" tab loads with the updated address/phone as the default/fallback when no saved content exists."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx",
+          "path": "frontend/src/components/RoyalCafe/data/content.ts",
           "operation": "modify",
-          "description": "Replace local-only string check flow with a backend-confirmed login flow by persisting the admin secret token (\"caffeineAdminToken\") for the session and forcing React Query to refetch the actor/admin status, so App editor gating sees isAdmin=true immediately after a successful submit. Ensure the implementation relies on the existing authorization mechanism (selected component: authorization) via backend-confirmed admin status, not purely client-side checks. Verify the component's usage instructions before implementing."
+          "description": "Update the default/fallback contact info so defaultContent.contactInfo.phone is \"+91 94508 14050\" and defaultContent.contactInfo.address is exactly \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\" (no other default content should be changed)."
         },
         {
-          "path": "frontend/src/hooks/useActor.ts",
+          "path": "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx",
           "operation": "modify",
-          "description": "Ensure actor creation/refetch correctly reacts to admin-token changes during the session (e.g., after AdminLoginDialog stores the secret), so the actor is reinitialized and subsequent admin checks reflect the updated authorization without a full reload."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Adjust editor entry flow (if needed) to avoid switching into editor view until the refreshed admin status is available, preventing a transient AccessDenied after a successful login-triggered refetch."
+          "description": "Ensure the Location card renders the exact fallback address string from the updated default content (rather than reconstructing from parts), while keeping all other section copy unchanged and keeping the phone number on its own dedicated \"Phone:\" line."
         }
       ]
     },
     {
-      "id": "REQ-24",
-      "summary": "Update AdminLoginDialog to verify admin login via backend state and refresh the cached admin-status query so NavBar/App gating updates immediately and dialog open/close behavior is stable.",
+      "id": "REQ-39",
+      "summary": "Remove Instagram as an available social option across the public UI (footer and any other exposed social/contact UI).",
       "acceptanceCriteria": [
-        "AdminLoginDialog attempts backend verification when the user submits the code, and shows a clear English error message if verification fails.",
-        "On successful verification, the `isAdmin` React Query state (query key ['isAdmin']) is refreshed/invalidated so `useAdminAuth()` returns true without a page reload.",
-        "After successful login, closing/opening the dialog continues to work correctly (no immediate auto-close loops from the Dialog onOpenChange handler)."
+        "The footer no longer displays an Instagram icon/link, and the Instagram URL https://www.instagram.com/royal_cafe_mau/ is no longer rendered in the UI.",
+        "There are no other Instagram social links/icons rendered anywhere on the public site."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx",
-          "operation": "modify",
-          "description": "Fix Dialog onOpenChange handling so opening the dialog doesn't immediately trigger a close/reset. On submit: (1) validate the code format/value, (2) perform backend-based verification by triggering an actor re-init + isAdmin refetch (not just local string-checking), (3) show a clear error when backend-confirmed isAdmin remains false, and (4) on success, invalidate/refetch React Query cache for ['isAdmin'] (and any actor query keys) so useAdminAuth() updates immediately. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/RoyalCafe/NavBar.tsx",
-          "operation": "modify",
-          "description": "Ensure NavBar's Admin/Editor button behavior remains consistent with the refreshed ['isAdmin'] query state after login (no stale isAdmin causing the dialog to reopen or the editor to be denied)."
-        },
-        {
           "path": "frontend/src/components/RoyalCafe/Footer.tsx",
           "operation": "modify",
-          "description": "Ensure Footer's Admin button behavior remains consistent with the refreshed ['isAdmin'] query state after login (no stale isAdmin causing the dialog to reopen or the editor to be denied)."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "If necessary, refine the isAdmin query behavior to better support immediate post-login transitions (e.g., ensure it can be safely invalidated/refetched and does not incorrectly cache false across actor changes)."
+          "description": "Remove the Instagram icon/link and any related imports/markup so the Instagram URL is not rendered in the footer."
         }
       ]
     }

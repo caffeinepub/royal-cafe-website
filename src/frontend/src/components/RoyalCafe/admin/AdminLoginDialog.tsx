@@ -7,8 +7,10 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { storeSessionParameter } from '../../../utils/urlParams';
-
-const ADMIN_CODE = '275101MAU';
+import { normalizeAdminCode, EXPECTED_ADMIN_CODE } from '../../../utils/adminCode';
+import { useActor } from '../../../hooks/useActor';
+import { useInternetIdentity } from '../../../hooks/useInternetIdentity';
+import { ADMIN_STATUS_QUERY_KEY } from '../../../hooks/queryKeys';
 
 interface AdminLoginDialogProps {
   open: boolean;
@@ -21,6 +23,8 @@ export function AdminLoginDialog({ open, onOpenChange, onSuccess }: AdminLoginDi
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
+  const { actor } = useActor();
+  const { identity } = useInternetIdentity();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,44 +32,77 @@ export function AdminLoginDialog({ open, onOpenChange, onSuccess }: AdminLoginDi
     setIsLoading(true);
 
     try {
-      // Validate the code
-      if (code.trim() !== ADMIN_CODE) {
-        setError('Invalid admin code. Please try again.');
+      // Normalize the admin code (trim whitespace, convert to uppercase)
+      const normalizedCode = normalizeAdminCode(code);
+
+      if (!normalizedCode) {
+        setError('Please enter an admin code.');
         setIsLoading(false);
         return;
       }
 
-      // Store the admin token in sessionStorage
-      storeSessionParameter('caffeineAdminToken', code.trim());
+      // Validate against expected admin code
+      if (normalizedCode !== EXPECTED_ADMIN_CODE) {
+        setError('Invalid admin code. Please check your code and try again.');
+        setIsLoading(false);
+        return;
+      }
+
+      // Store the normalized admin token in sessionStorage
+      storeSessionParameter('caffeineAdminToken', normalizedCode);
 
       // Invalidate the actor query to force re-initialization with the admin token
-      await queryClient.invalidateQueries({ queryKey: ['actor'] });
-      
-      // Wait a bit for the actor to reinitialize
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      // Invalidate and refetch the isAdmin query
-      await queryClient.invalidateQueries({ queryKey: ['isAdmin'] });
-      await queryClient.refetchQueries({ queryKey: ['isAdmin'] });
+      // Use predicate to match the actual query key structure
+      await queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === 'actor'
+      });
 
-      // Wait a bit more to ensure the query has updated
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      // Verify that admin status is now true
-      const isAdminData = queryClient.getQueryData<boolean>(['isAdmin']);
-      
-      if (isAdminData !== true) {
-        setError('Login failed. Unable to verify admin access. Please try again.');
-        setIsLoading(false);
-        return;
+      // Wait for actor to be available and re-initialized
+      let attempts = 0;
+      const maxAttempts = 20;
+      while (attempts < maxAttempts) {
+        const currentActor = queryClient.getQueryData(
+          ['actor', identity?.getPrincipal().toString()]
+        ) as any;
+        
+        if (currentActor) {
+          // Actor is ready, now verify admin status
+          try {
+            const isAdminNow = await currentActor.isCallerAdmin();
+            
+            if (isAdminNow) {
+              // Success! Refetch admin status query to update UI
+              await queryClient.refetchQueries({ queryKey: ADMIN_STATUS_QUERY_KEY });
+              
+              // Clear form and close dialog
+              setCode('');
+              setError('');
+              setIsLoading(false);
+              onOpenChange(false);
+              onSuccess();
+              return;
+            } else {
+              // Admin check failed - backend didn't recognize the code
+              setError('Invalid admin code. Please check your code and try again.');
+              setIsLoading(false);
+              return;
+            }
+          } catch (err) {
+            console.error('Error checking admin status:', err);
+            setError('An error occurred while verifying the code. Please try again.');
+            setIsLoading(false);
+            return;
+          }
+        }
+        
+        // Wait a bit before checking again
+        await new Promise(resolve => setTimeout(resolve, 50));
+        attempts++;
       }
 
-      // Success - clear form and close dialog
-      setCode('');
-      setError('');
+      // If we get here, actor didn't reinitialize in time
+      setError('Unable to connect to the backend. Please try again.');
       setIsLoading(false);
-      onOpenChange(false);
-      onSuccess();
     } catch (err) {
       console.error('Admin login error:', err);
       setError('An error occurred during login. Please try again.');

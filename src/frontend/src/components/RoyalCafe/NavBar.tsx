@@ -46,19 +46,15 @@ export function NavBar({ onEnterEditor }: NavBarProps) {
   };
 
   const handleLoginSuccess = () => {
-    // Dialog will close itself after successful login
-    // Wait a moment for the admin state to update, then enter editor
-    setTimeout(() => {
-      if (onEnterEditor) {
-        onEnterEditor();
-      }
-    }, 200);
+    // Dialog handles verification and only calls onSuccess when admin status is confirmed
+    if (onEnterEditor) {
+      onEnterEditor();
+    }
   };
 
   const navLinks = [
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
-    { id: 'highlights', label: 'Popular' },
     { id: 'menu', label: 'Menu' },
     { id: 'reviews', label: 'Reviews' },
     { id: 'contact', label: 'Contact' }

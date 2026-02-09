@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 17,
+  "projectStateVersion": 27,
   "summary": "Design and build a modern, mobile-friendly, authentic local café website for Royal Cafe (Varpur, Mau, Uttar Pradesh) with a warm/royal cozy aesthetic, clear CTA, menu, gallery, testimonials, and contact/location details including embedded Google Map.",
   "architectural_notes": [
     "Prioritize mobile-first responsive layout and performance since most visitors will be on phones.",
@@ -8,13 +8,19 @@
     "Site should maintain a cozy + royal color palette: warm tones with a touch of elegance.",
     "Hero section: add an additional CTA button placed below “Visit Us” labeled “Order by JD” linking to the JustDial ordering page.",
     "Hero section: add another CTA button beside “Order by JD” labeled “Order by call” linking to tel:+919450814050.",
-    "Admin login/editor access: define how the login code (275101MAU) is validated and ensure it is not exposed publicly in client-side code."
+    "Admin login/editor access: define how the login code (275101MAU) is validated and ensure it is not exposed publicly in client-side code.",
+    "Admin login code has been changed/should be adjusted to: \"royalcafemau01\" (replacing the previously used \"275101MAU\"). Ensure validation and backend access-control initialization use the updated code.",
+    "Update Contact/Location details to: Address = \"Street 1, Varpur, Mau, Uttar Pradesh 275101\"; Phone = \"+91 94508 14050\"; Business hours = \"10:00 am to 10:00 pm\".",
+    "Remove the “Popular Picks”/Popular section from the page (do not render it).",
+    "Update Contact/Location details to: Location = \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\"; Phone = \"+91 94508 14050\"."
   ],
   "known_issues": [
     "Contact section edit attempt overwrote an existing paragraph element; phone number should be added in a separate place instead of replacing current content.",
-    "Admin login: entering the correct code (275101MAU) does not allow access/redirect to the admin editor page."
+    "Admin login: entering the correct code (275101MAU) does not allow access/redirect to the admin editor page.",
+    "Admin login still shows an \"invalid\" message (login code not being accepted) after the latest deployment.",
+    "Admin code/login still not working (correct code not granting admin/editor access) after the latest live deployment (Version 9)."
   ],
-  "isFixRequest": true,
+  "isFixRequest": false,
   "existing_features": [
     {
       "id": "feature-create-a-single-page-mobile-first-marketing-website-for-royal-cafe-varpur-mau-uttar-pradesh-with-clear-scroll-navigation-between-sections-hero-about-highlights-menu-gallery-reviews-and-contact-location",
@@ -191,6 +197,102 @@
         "REQ-24"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-update-the-admin-login-flow-so-entering-the-correct-admin-code-does-not-show-an-invalid-error-and-successfully-authorizes-the-current-caller-for-editor-access",
+      "title": "Update the admin login flow so entering the correct admin code does not show an “invalid” error and successfully authorizes the current caller for editor access.",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-admin-code-verification-case-insensitive-e-g-accept-275101mau-275101mau-and-mixed-case-input-and-ignore-leading-trailing-whitespace",
+      "title": "Make admin code verification case-insensitive (e.g., accept \"275101MAU\", \"275101mau\", and mixed-case input) and ignore leading/trailing whitespace.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-frontend-remove-any-purely-local-string-only-admin-validation-that-can-reject-a-correct-code-due-to-casing-formatting-instead-treat-backend-authorization-admin-status-access-control-initialization-result-as-the-source-of-truth-and-show-errors-only-when-backend-authorization-fails",
+      "title": "Frontend: Remove any purely local string-only admin validation that can reject a correct code due to casing/formatting; instead, treat backend authorization (admin status / access-control initialization result) as the source of truth and show errors only when backend authorization fails.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-frontend-admin-login-flow-so-entering-the-correct-admin-code-275101mau-reliably-results-in-admin-authorization-iscalleradmin-becomes-true-and-the-editor-page-becomes-accessible-no-accessdenied-after-a-successful-login",
+      "title": "Fix the frontend admin login flow so entering the correct admin code \"275101MAU\" reliably results in admin authorization (isCallerAdmin becomes true) and the Editor page becomes accessible (no AccessDenied after a successful login).",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-actor-query-invalidation-logic-used-by-the-adminlogindialog-so-it-correctly-reinitializes-the-backend-actor-after-saving-the-admin-token-and-so-it-verifies-admin-status-using-the-same-actor-instance-query-key-that-the-rest-of-the-app-uses-no-mismatched-react-query-keys-such-as-reading-invalidation-of-actor-when-the-actual-actor-query-key-includes-identity",
+      "title": "Update the actor/query invalidation logic used by the AdminLoginDialog so it correctly reinitializes the backend actor after saving the admin token, and so it verifies admin status using the same actor instance/query key that the rest of the app uses (no mismatched React Query keys such as reading/invalidation of ['actor'] when the actual actor query key includes identity).",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-frontend-actor-initialization-so-access-control-secret-initialization-is-performed-for-both-authenticated-and-anonymous-sessions-using-the-stored-session-token-caffeineadmintoken-when-present-so-admin-login-can-work-even-if-the-user-has-not-logged-in-with-internet-identity",
+      "title": "Update frontend actor initialization so access control secret initialization is performed for both authenticated and anonymous sessions, using the stored session token \"caffeineAdminToken\" when present, so admin login can work even if the user has not logged in with Internet Identity.",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-frontend-admin-login-flow-to-use-the-new-admin-login-code-royalcafemau01-as-the-expected-credential-while-keeping-normalization-behavior-trimming-uppercasing-and-ensure-the-ui-reliably-transitions-to-editor-access-when-the-new-code-is-entered",
+      "title": "Update the frontend admin login flow to use the new admin login code \"royalcafemau01\" as the expected credential (while keeping normalization behavior: trimming + uppercasing) and ensure the UI reliably transitions to editor access when the new code is entered.",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-contact-location-section-content-so-it-displays-exactly-these-values-location-street-1-varpur-mau-uttar-pradesh-275101-phone-number-91-94508-14050-business-hours-10-00-am-to-10-00-pm-ensure-these-values-render-in-the-existing-contactlocationsection-ui-without-overwriting-other-contact-location-copy",
+      "title": "Update the Contact & Location section content so it displays exactly these values: Location: \"Street 1, Varpur, Mau, Uttar Pradesh 275101\"; Phone number: \"+91 94508 14050\"; Business Hours: \"10:00 am to 10:00 pm\". Ensure these values render in the existing ContactLocationSection UI without overwriting other contact/location copy.",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-popular-picks-highlights-section-from-the-public-page-layout-and-navigation-so-it-is-no-longer-rendered-and-users-cannot-navigate-scroll-to-it",
+      "title": "Remove the \"Popular Picks\" (highlights) section from the public page layout and navigation so it is no longer rendered and users cannot navigate/scroll to it.",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-admin-editor-page-ui-to-match-the-removal-of-the-popular-picks-section-by-removing-the-highlights-popular-picks-editing-tab-and-any-related-ui-elements-that-are-no-longer-applicable",
+      "title": "Update the admin Editor page UI to match the removal of the Popular Picks section by removing the Highlights/Popular Picks editing tab and any related UI elements that are no longer applicable.",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-contact-location-content-so-the-displayed-values-are-contact-number-91-94508-14050-location-address-royal-cafe-street-1-varpur-mau-uttar-pradesh-ensure-these-values-render-in-the-existing-contactlocationsection-without-overwriting-other-copy-and-ensure-the-phone-number-remains-its-own-dedicated-phone-line",
+      "title": "Update the Contact & Location content so the displayed values are:\n- Contact number: \"+91 94508 14050\"\n- Location/address: \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\"\nEnsure these values render in the existing ContactLocationSection without overwriting other copy, and ensure the phone number remains its own dedicated phone line.",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-instagram-option-from-the-site-so-instagram-is-no-longer-shown-as-an-available-social-platform-including-removing-the-instagram-icon-link-in-the-footer-and-any-other-social-contact-ui-that-exposes-instagram",
+      "title": "Remove the Instagram option from the site so Instagram is no longer shown as an available social platform (including removing the Instagram icon/link in the footer and any other social/contact UI that exposes Instagram).",
+      "reqIds": [
+        "REQ-39"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -203,12 +305,6 @@
     {
       "id": "AR-2",
       "summary": "About/intro section describing what makes Royal Cafe special in Varpur (quality taste, friendly atmosphere, affordable pricing, comfortable seating)",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "Highlight popular items (tea, coffee, snacks, fast food, specials if available) in a simple, easy-to-read section",
       "reqIds": [],
       "status": "pending"
     },
@@ -280,6 +376,42 @@
       "reqIds": [
         "REQ-23"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-22",
+      "summary": "Backend: Ensure the access-control secret/admin-code check used by the frontend actor initialization path (via _initializeAccessControlWithSecret) recognizes the Royal Cafe admin code in a case-insensitive manner.",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-26",
+      "summary": "Ensure the backend access control initialization path (_initializeAccessControlWithSecret) and admin status API (isCallerAdmin) behave consistently with admin-only mutations (updateHomePageContent): when the correct admin code \"275101MAU\" is provided (case-insensitive, whitespace-tolerant), (1) isCallerAdmin returns true for that caller and (2) updateHomePageContent succeeds for that caller; with an incorrect code, isCallerAdmin returns false and updateHomePageContent remains unauthorized.",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-27",
+      "summary": "Update the backend admin secret/code so that the admin login code is now \"royalcafemau01\" (case-insensitive and whitespace-tolerant), and ensure backend authorization is granted when this code is provided via the existing access-control initialization path.",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-28",
+      "summary": "Update Contact/Location display to: Location = \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\" and ensure contact number is \"+91 94508 14050\"",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-29",
+      "summary": "Remove the Instagram ID/link option from the site’s social/contact areas (do not show Instagram)",
+      "reqIds": [],
       "status": "pending"
     }
   ],

@@ -1,4 +1,3 @@
-import { SiInstagram } from 'react-icons/si';
 import { Heart, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { AdminLoginDialog } from './admin/AdminLoginDialog';
@@ -21,13 +20,10 @@ export function Footer({ onEnterEditor }: FooterProps) {
   };
 
   const handleLoginSuccess = () => {
-    // Dialog will close itself after successful login
-    // Wait a moment for the admin state to update, then enter editor
-    setTimeout(() => {
-      if (onEnterEditor) {
-        onEnterEditor();
-      }
-    }, 200);
+    // Dialog handles verification and only calls onSuccess when admin status is confirmed
+    if (onEnterEditor) {
+      onEnterEditor();
+    }
   };
 
   return (
@@ -74,21 +70,10 @@ export function Footer({ onEnterEditor }: FooterProps) {
             {/* Contact */}
             <div>
               <h3 className="font-display text-xl font-bold mb-4 text-royal-gold">Visit Us</h3>
-              <p className="text-royal-cream/80 text-sm leading-relaxed mb-4">
+              <p className="text-royal-cream/80 text-sm leading-relaxed">
                 Varpur, Mau<br />
                 Uttar Pradesh
               </p>
-              <div className="flex gap-4">
-                <a
-                  href="https://www.instagram.com/royal_cafe_mau/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-royal-cream/80 hover:text-royal-gold transition-colors"
-                  aria-label="Instagram"
-                >
-                  <SiInstagram className="h-5 w-5" />
-                </a>
-              </div>
             </div>
           </div>
 

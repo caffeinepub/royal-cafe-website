@@ -1,84 +1,54 @@
 {
   "kind": "build_request",
-  "title": "Fix admin login so correct code grants access to the admin editor",
-  "priority": "high",
+  "title": "Update contact address format and remove Instagram option",
+  "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-22",
-      "text": "Fix the admin authentication flow so that entering the correct admin code \"275101MAU\" actually authorizes the current caller and allows access to the admin-only editor page (no AccessDenied screen after successful login).",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "not entering admin page by entering coorect code"
-        ]
-      },
-      "acceptanceCriteria": [
-        "From the NavBar or Footer Admin entry, entering exactly \"275101MAU\" results in the EditorPage being shown (not AccessDenied).",
-        "The authorization decision is not purely client-side; the backend must be able to confirm whether the current caller is an admin.",
-        "After successful login, the frontend admin check state updates without requiring a hard reload (i.e., the UI transitions into editor mode immediately)."
-      ]
-    },
-    {
-      "id": "REQ-23",
-      "text": "Backend: expose an admin-status API used by the frontend and ensure it behaves consistently with content update authorization (i.e., the same rule that allows updateHomePageContent must also make isCallerAdmin return true).",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "not entering admin page by entering coorect code"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The backend provides a callable method that the frontend can use as `actor.isCallerAdmin()` (as used in frontend/src/hooks/useQueries.ts).",
-        "When a caller is not authorized as admin, the method returns false (it must not trap).",
-        "When a caller is authorized as admin, the method returns true.",
-        "Admin-only update endpoints (e.g., updateHomePageContent) remain protected and only succeed for callers recognized as admin by the backend."
-      ]
-    },
-    {
-      "id": "REQ-24",
-      "text": "Frontend: update AdminLoginDialog to perform admin login against the backend (instead of only local string-checking) and to refresh the cached admin status query after a successful login so NavBar/App editor gating works reliably.",
+      "id": "REQ-38",
+      "text": "Update the Contact & Location content so the displayed values are:\n- Contact number: \"+91 94508 14050\"\n- Location/address: \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\"\nEnsure these values render in the existing ContactLocationSection without overwriting other copy, and ensure the phone number remains its own dedicated phone line.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-3"
+          "msg-4"
         ],
         "quotes": [
-          "not entering admin page by entering coorect code"
+          "contact number - +91 94508 14050 / location - Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh"
         ]
       },
       "acceptanceCriteria": [
-        "AdminLoginDialog attempts backend verification when the user submits the code, and shows a clear English error message if verification fails.",
-        "On successful verification, the `isAdmin` React Query state (query key ['isAdmin']) is refreshed/invalidated so `useAdminAuth()` returns true without a page reload.",
-        "After successful login, closing/opening the dialog continues to work correctly (no immediate auto-close loops from the Dialog onOpenChange handler)."
+        "On the public site, the Contact card shows a line reading exactly: \"Phone: +91 94508 14050\".",
+        "On the public site, the Location card shows the address text exactly: \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\" (line breaks are allowed, but the text must match).",
+        "No other paragraphs/copy in the Contact & Location section are removed or replaced as a side effect of the update.",
+        "The Admin Editor \"Contact Info\" tab loads with the updated address/phone as the default/fallback when no saved content exists."
+      ]
+    },
+    {
+      "id": "REQ-39",
+      "text": "Remove the Instagram option from the site so Instagram is no longer shown as an available social platform (including removing the Instagram icon/link in the footer and any other social/contact UI that exposes Instagram).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "and removed instagram id option"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The footer no longer displays an Instagram icon/link, and the Instagram URL https://www.instagram.com/royal_cafe_mau/ is no longer rendered in the UI.",
+        "There are no other Instagram social links/icons rendered anywhere on the public site."
       ]
     }
   ],
   "constraints": [
-    "Respect the single-actor backend architecture: keep all Motoko logic in backend/main.mo.",
-    "Do not modify any frontend files under frontend/src/components/ui or any other paths listed in frontend.immutablePaths."
+    "Do not modify any files under frontend/src/components/ui or any other paths listed in frontend.immutablePaths."
   ],
   "nonGoals": [
-    "Adding third-party authentication providers (only Internet Identity is supported).",
-    "Changing the cafe website public content/sections beyond what is needed to fix admin login."
+    "Do not change Google Maps embed/link behavior unless required to satisfy the new address text.",
+    "Do not change admin authentication, admin code behavior, or editor access control as part of this request."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HeroSection } from './components/RoyalCafe/sections/HeroSection';
 import { AboutSection } from './components/RoyalCafe/sections/AboutSection';
-import { HighlightsSection } from './components/RoyalCafe/sections/HighlightsSection';
 import { MenuSection } from './components/RoyalCafe/sections/MenuSection';
 import { ReviewsSection } from './components/RoyalCafe/sections/ReviewsSection';
 import { ContactLocationSection } from './components/RoyalCafe/sections/ContactLocationSection';
@@ -28,15 +27,8 @@ function AppContent() {
     setViewMode('public');
   };
 
-  // When entering editor mode, wait for auth to be confirmed
-  useEffect(() => {
-    if (viewMode === 'editor' && !authLoading && !isAdmin) {
-      // If we're in editor mode but not admin after loading completes,
-      // the AccessDenied component will show
-    }
-  }, [viewMode, authLoading, isAdmin]);
-
   if (viewMode === 'editor') {
+    // Show loading state while checking authorization
     if (authLoading) {
       return (
         <div className="min-h-screen bg-background flex items-center justify-center">
@@ -48,10 +40,12 @@ function AppContent() {
       );
     }
 
+    // Only show AccessDenied after auth check completes and user is not admin
     if (!isAdmin) {
       return <AccessDenied onExit={handleExitEditor} />;
     }
 
+    // User is confirmed admin, show editor
     return <EditorPage onExit={handleExitEditor} />;
   }
 
@@ -61,7 +55,6 @@ function AppContent() {
       <main>
         <HeroSection />
         <AboutSection />
-        <HighlightsSection content={content} isLoading={contentLoading} />
         <MenuSection content={content} isLoading={contentLoading} />
         <ReviewsSection content={content} isLoading={contentLoading} />
         <ContactLocationSection content={content} isLoading={contentLoading} />

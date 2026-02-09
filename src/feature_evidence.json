@@ -2,11 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-fix-the-admin-authentication-flow-so-that-entering-the-correct-admin-code-275101mau-actually-authorizes-the-current-caller-and-allows-access-to-the-admin-only-editor-page-no-accessdenied-screen-after-successful-login",
-      "featureTitle": "Fix the admin authentication flow so that entering the correct admin code \"275101MAU\" actually authorizes the current caller and allows access to the admin-only editor page (no AccessDenied screen after successful login).",
+      "featureId": "feature-update-the-contact-location-content-so-the-displayed-values-are-contact-number-91-94508-14050-location-address-royal-cafe-street-1-varpur-mau-uttar-pradesh-ensure-these-values-render-in-the-existing-contactlocationsection-without-overwriting-other-copy-and-ensure-the-phone-number-remains-its-own-dedicated-phone-line",
+      "featureTitle": "Update the Contact & Location content so the displayed values are:\n- Contact number: \"+91 94508 14050\"\n- Location/address: \"Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh\"\nEnsure these values render in the existing ContactLocationSection without overwriting other copy, and ensure the phone number remains its own dedicated phone line.",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx"
+        "frontend/src/components/RoyalCafe/data/content.ts",
+        "frontend/src/components/RoyalCafe/sections/ContactLocationSection.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -17,18 +17,15 @@
         "authorization@4.0.0"
       ],
       "testIds": [
-        "REQ-22"
+        "REQ-38"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-frontend-update-adminlogindialog-to-perform-admin-login-against-the-backend-instead-of-only-local-string-checking-and-to-refresh-the-cached-admin-status-query-after-a-successful-login-so-navbar-app-editor-gating-works-reliably",
-      "featureTitle": "Frontend: update AdminLoginDialog to perform admin login against the backend (instead of only local string-checking) and to refresh the cached admin status query after a successful login so NavBar/App editor gating works reliably.",
+      "featureId": "feature-remove-the-instagram-option-from-the-site-so-instagram-is-no-longer-shown-as-an-available-social-platform-including-removing-the-instagram-icon-link-in-the-footer-and-any-other-social-contact-ui-that-exposes-instagram",
+      "featureTitle": "Remove the Instagram option from the site so Instagram is no longer shown as an available social platform (including removing the Instagram icon/link in the footer and any other social/contact UI that exposes Instagram).",
       "files": [
-        "frontend/src/components/RoyalCafe/Footer.tsx",
-        "frontend/src/components/RoyalCafe/NavBar.tsx",
-        "frontend/src/components/RoyalCafe/admin/AdminLoginDialog.tsx",
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/components/RoyalCafe/Footer.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -39,7 +36,7 @@
         "authorization@4.0.0"
       ],
       "testIds": [
-        "REQ-24"
+        "REQ-39"
       ],
       "confidence": "high"
     }

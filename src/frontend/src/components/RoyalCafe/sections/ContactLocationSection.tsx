@@ -47,8 +47,8 @@ export function ContactLocationSection({ content, isLoading }: ContactLocationSe
                         <Skeleton className="h-4 w-3/4" />
                       </div>
                     ) : (
-                      <p className="text-foreground/80 leading-relaxed whitespace-pre-line">
-                        {contactInfo?.address || `${defaultContactInfo.address.street}\n${defaultContactInfo.address.city}, ${defaultContactInfo.address.state}\n${defaultContactInfo.address.country}`}
+                      <p className="text-foreground/80 leading-relaxed">
+                        {contactInfo?.address || 'Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh'}
                       </p>
                     )}
                     <Button

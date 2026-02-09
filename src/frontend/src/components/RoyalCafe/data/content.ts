@@ -117,7 +117,7 @@ export const testimonials = [
 // Contact Information
 export const contactInfo = {
   address: {
-    street: 'Varpur',
+    street: 'Royal Cafe, Street 1, Varpur',
     city: 'Mau',
     state: 'Uttar Pradesh',
     country: 'India'
@@ -126,7 +126,7 @@ export const contactInfo = {
   email: 'info@royalcafe.com',
   hours: [
     'Monday - Sunday',
-    '7:00 AM - 10:00 PM',
+    '10:00 am to 10:00 pm',
     'Open all days'
   ],
   mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28826.84!2d83.56!3d25.95!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39914c1c1c1c1c1c%3A0x1c1c1c1c1c1c1c1c!2sVarpur%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1234567890',
@@ -150,8 +150,8 @@ export const defaultContent: HomePageContent = {
     `${t.name}|${t.location}|${t.quote}`
   ),
   contactInfo: {
-    address: `${contactInfo.address.street}, ${contactInfo.address.city}, ${contactInfo.address.state}, ${contactInfo.address.country}`,
-    phone: contactInfo.phone,
+    address: 'Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh',
+    phone: '+91 94508 14050',
     hours: contactInfo.hours.join('\n')
   }
 };

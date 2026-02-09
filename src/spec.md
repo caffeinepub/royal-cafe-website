@@ -1,11 +1,13 @@
 # Specification
 
 ## Summary
-**Goal:** Fix the admin login flow so entering the correct admin code (“275101MAU”) reliably authorizes the caller and grants access to the admin-only editor without showing AccessDenied.
+**Goal:** Update the Contact & Location section to display the new phone/address formatting, and remove Instagram as an available social option across the site.
 
 **Planned changes:**
-- Backend: add/ensure a callable admin-status API (`isCallerAdmin`) that returns true/false (no traps) and uses the same authorization rule as admin-only update methods (e.g., `updateHomePageContent`).
-- Frontend: update `AdminLoginDialog` to verify the admin code via the backend (not only a local string check) and show a clear English error message on failure.
-- Frontend: after successful login, refresh/invalidate the React Query `['isAdmin']` cache so `useAdminAuth()` updates immediately (no hard reload), and ensure the dialog open/close behavior remains stable (no auto-close loops).
+- Update the ContactLocationSection display values to show:
+  - Phone line exactly as: "Phone: +91 94508 14050"
+  - Address text exactly as: "Royal Cafe, Street 1, Varpur, Mau, Uttar Pradesh" (allowing line breaks without changing the text)
+- Ensure the Admin Editor "Contact Info" tab uses the updated phone/address as the default/fallback when no saved content exists.
+- Remove Instagram as an available social platform across the public UI (including the footer icon/link and any other Instagram social/contact rendering).
 
-**User-visible outcome:** From the NavBar or Footer Admin entry, entering exactly “275101MAU” takes the user directly to the EditorPage (not AccessDenied), and the app switches into admin/editor mode immediately after successful login.
+**User-visible outcome:** Visitors see the updated phone and address in the Contact & Location section, and no Instagram icon/link (or Instagram URL) appears anywhere on the site.
